@@ -27,6 +27,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import VantaBackground from "@/components/ui/VantaBackground";
+import RotatingText from '@/components/ui/RotatingText'
 
 const technologies = [
   { name: "Python", icon: Code2 },
@@ -231,17 +232,26 @@ function HeroSection() {
             <span className="gradient-text">Jay Sinha</span>
           </motion.h1>
 
-          <motion.p 
-            className="text-xl md:text-2xl text-muted-foreground max-w-3xl mb-10 leading-relaxed"
+          <motion.div 
+            className="text-xl md:text-2xl text-muted-foreground max-w-3xl mb-10 leading-relaxed flex flex-wrap items-center gap-2 justify-center md:justify-start"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
-            Building intelligent systems with{" "}
-            <span className="text-accent font-semibold">Deep Learning</span>,{" "}
-            <span className="text-primary font-semibold">Computer Vision</span>, and{" "}
-            <span className="text-accent font-semibold">Generative AI</span>
-          </motion.p>
+            Building intelligent systems with
+            <RotatingText
+              texts={['Deep Learning', 'Computer Vision', 'Generative AI']}
+              mainClassName="px-2 sm:px-2 md:px-3 bg-primary/10 text-primary overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+              staggerFrom={"last"}
+              initial={{ y: "120%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+              transition={{ type: "spring", damping: 30, stiffness: 450 }}
+              rotationInterval={2000}
+            />
+          </motion.div>
 
           <motion.div 
             className="flex flex-col sm:flex-row gap-5 justify-center md:justify-start"
