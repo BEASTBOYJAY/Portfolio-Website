@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
+import VantaBackground from "@/components/ui/VantaBackground";
 
 const technologies = [
   { name: "Python", icon: Code2 },
@@ -134,17 +135,8 @@ function TechMarquee({ reverse = false }: { reverse?: boolean }) {
   );
 }
 
-function Navbar() {
-  const [isDark, setIsDark] = useState(true);
+function Navbar({ isDark, setIsDark }: { isDark: boolean; setIsDark: (value: boolean) => void }) {
   const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDark]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -211,7 +203,7 @@ function Navbar() {
 
 function HeroSection() {
   return (
-    <section className="min-h-screen flex flex-col justify-center relative overflow-hidden px-6 section-bg">
+    <section className="min-h-screen flex flex-col justify-center relative overflow-hidden px-6">
       <div className="max-w-7xl mx-auto w-full pt-40 pb-16">
         <motion.div 
           className="text-center md:text-left"
@@ -355,7 +347,7 @@ function AboutSection() {
 
 function ExperienceSection() {
   return (
-    <section id="experience" className="py-32 px-6 section-bg">
+    <section id="experience" className="py-32 px-6">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -471,7 +463,7 @@ function ProjectsSection() {
 
 function SkillsSection() {
   return (
-    <section id="skills" className="py-32 px-6 section-bg">
+    <section id="skills" className="py-32 px-6">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -575,17 +567,29 @@ function Footer() {
 }
 
 export default function HomePage() {
+  const [isDark, setIsDark] = useState(true);
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDark]);
+
   return (
     <main className="min-h-screen">
-      <Navbar />
-      <HeroSection />
-      <TechShowcaseSection />
-      <AboutSection />
-      <ExperienceSection />
-      <ProjectsSection />
-      <SkillsSection />
-      <ContactSection />
-      <Footer />
+      <VantaBackground isDark={isDark}>
+        <Navbar isDark={isDark} setIsDark={setIsDark} />
+        <HeroSection />
+        <TechShowcaseSection />
+        <AboutSection />
+        <ExperienceSection />
+        <ProjectsSection />
+        <SkillsSection />
+        <ContactSection />
+        <Footer />
+      </VantaBackground>
     </main>
   );
 }
