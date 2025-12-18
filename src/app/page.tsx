@@ -537,7 +537,7 @@ function ContactSection() {
             or just having a chat about AI and technology.
           </p>
           <div className="flex flex-col sm:flex-row gap-5 justify-center mb-10">
-            <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 hover:text-primary-foreground hover:scale-105 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold text-base px-8 py-6">
+            <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 hover:text-primary-foreground hover:scale-105 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold text-base px-8 py-6" onClick={() => window.location.href = "mailto:jay31sinha@gmail.com"}>
               <Mail className="w-5 h-5 mr-2" />
               jay31sinha@gmail.com
             </Button>
