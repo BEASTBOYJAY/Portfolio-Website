@@ -26,7 +26,7 @@ export default function RootLayout({
               "url": "https://jaysinha.dev",
               "sameAs": [
                 "https://github.com/beastboyjay",
-                "https://twitter.com/beastboyjay",
+                "https://x.com/BEAST_BOY_JAY",
                 "https://medium.com/@beastboyjay"
               ]
             })
