@@ -27,7 +27,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import VantaBackground from "@/components/ui/VantaBackground";
-import RotatingText from '@/components/ui/RotatingText'
+import TextType from '@/components/ui/TextType'
 
 const technologies = [
   { name: "Python", icon: Code2 },
@@ -150,14 +150,12 @@ function Navbar({ isDark, setIsDark }: { isDark: boolean; setIsDark: (value: boo
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 px-6 py-5 transition-all duration-300 ${
-        scrolled ? "py-3" : ""
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 px-6 py-5 transition-all duration-300 ${scrolled ? "py-3" : ""
+        }`}
     >
-      <div className={`max-w-7xl mx-auto flex items-center justify-between bg-card/70 backdrop-blur-2xl rounded-full px-8 py-4 border border-border/50 shadow-lg transition-all duration-300 ${
-        scrolled ? "py-3 shadow-xl" : ""
-      }`}>
-        <motion.span 
+      <div className={`max-w-7xl mx-auto flex items-center justify-between bg-card/70 backdrop-blur-2xl rounded-full px-8 py-4 border border-border/50 shadow-lg transition-all duration-300 ${scrolled ? "py-3 shadow-xl" : ""
+        }`}>
+        <motion.span
           className="text-xl font-bold gradient-text cursor-pointer"
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 400 }}
@@ -206,13 +204,13 @@ function HeroSection() {
   return (
     <section className="min-h-screen flex flex-col justify-center relative overflow-hidden px-6">
       <div className="max-w-7xl mx-auto w-full pt-40 pb-16">
-        <motion.div 
+        <motion.div
           className="text-center md:text-left"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <motion.div 
+          <motion.div
             className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-primary/10 rounded-full border border-primary/20 mb-8 shadow-sm hover:text-accent hover:border-accent hover:bg-accent/10 transition-all duration-300 cursor-pointer"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -222,7 +220,7 @@ function HeroSection() {
             <span className="text-sm font-semibold text-primary">AI Engineer & ML Developer</span>
           </motion.div>
 
-          <motion.h1 
+          <motion.h1
             className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-[1.1]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -232,28 +230,22 @@ function HeroSection() {
             <span className="gradient-text">Jay Sinha</span>
           </motion.h1>
 
-          <motion.div 
+          <motion.div
             className="text-xl md:text-2xl text-muted-foreground max-w-3xl mb-10 leading-relaxed flex flex-wrap items-center gap-2 justify-center md:justify-start"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
             Building intelligent systems with
-            <RotatingText
-              texts={['Deep Learning', 'Computer Vision', 'Generative AI']}
-              mainClassName="px-2 sm:px-2 md:px-3 bg-primary/10 text-primary overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
-              staggerFrom={"last"}
-              initial={{ y: "120%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "-120%" }}
-              staggerDuration={0.025}
-              splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
-              transition={{ type: "spring", damping: 30, stiffness: 450 }}
-              rotationInterval={2000}
+            <TextType
+              text={['Deep Learning', 'Computer Vision', 'Generative AI']}
+              className="px-2 sm:px-2 md:px-3 bg-primary/10 backdrop-blur-sm text-primary py-0.5 sm:py-1 md:py-2 rounded-lg inline-flex transition-all duration-300 border border-transparent hover:border-accent hover:text-accent hover:bg-accent/10 hover:scale-105 cursor-pointer"
+              loop={true}
+              pauseDuration={2000}
             />
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="flex flex-col sm:flex-row gap-5 justify-center md:justify-start"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -269,7 +261,7 @@ function HeroSection() {
         </motion.div>
       </div>
 
-      <motion.div 
+      <motion.div
         className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -312,7 +304,7 @@ function AboutSection() {
             <span className="gradient-text">About Me</span>
           </h2>
           <div className="grid md:grid-cols-2 gap-16 items-center">
-            <motion.div 
+            <motion.div
               className="space-y-7"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -320,12 +312,12 @@ function AboutSection() {
               transition={{ duration: 0.7, delay: 0.2 }}
             >
               <p className="text-lg text-muted-foreground leading-relaxed">
-                I&apos;m a driven computer science undergraduate passionate about AI, ML, and generative AI, 
-                with strong data science expertise and a focus on transforming theoretical concepts into 
+                I&apos;m a driven computer science undergraduate passionate about AI, ML, and generative AI,
+                with strong data science expertise and a focus on transforming theoretical concepts into
                 practical innovations.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Eager to deliver cutting-edge solutions in the dynamic and transformative field of 
+                Eager to deliver cutting-edge solutions in the dynamic and transformative field of
                 artificial intelligence and generative technologies.
               </p>
               <div className="flex items-start gap-4 pt-6">
@@ -335,7 +327,7 @@ function AboutSection() {
                 </Badge>
               </div>
             </motion.div>
-            <motion.div 
+            <motion.div
               className="relative"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -370,7 +362,7 @@ function ExperienceSection() {
           </h2>
           <div className="space-y-8 max-w-5xl mx-auto">
             {experience.map((exp, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -422,7 +414,7 @@ function ProjectsSection() {
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -486,7 +478,7 @@ function SkillsSection() {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {Object.entries(skills).map(([category, items], idx) => (
-              <motion.div 
+              <motion.div
                 key={category}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -533,7 +525,7 @@ function ContactSection() {
             <span className="gradient-text">Let&apos;s Connect</span>
           </h2>
           <p className="text-xl text-muted-foreground mb-14 max-w-3xl mx-auto leading-relaxed">
-            I&apos;m always open to discussing new opportunities, innovative projects, 
+            I&apos;m always open to discussing new opportunities, innovative projects,
             or just having a chat about AI and technology.
           </p>
           <div className="flex flex-col sm:flex-row gap-5 justify-center mb-10">
@@ -561,7 +553,7 @@ function ContactSection() {
 
 function Footer() {
   const currentYear = new Date().getFullYear();
-  
+
   return (
     <footer className="py-10 px-6 border-t border-border/50">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
