@@ -1,347 +1,481 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  Brain,
-  BrainCircuit,
-  Code2,
-  Database,
-  Github,
-  Linkedin,
-  Mail,
-  ExternalLink,
-  Cpu,
-  Eye,
-  MessageSquare,
-  Sparkles,
-  Server,
-  Container,
-  Zap,
-  ChevronDown,
-  Moon,
-  Sun,
-  Award,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { useState, useEffect } from "react";
-import VantaBackground from "@/components/ui/VantaBackground";
-import TextType from '@/components/ui/TextType'
+import { useEffect, useRef, useState } from "react";
 
-const technologies = [
-  { name: "Python", icon: Code2 },
-  { name: "PyTorch", icon: Brain },
-  { name: "TensorFlow", icon: Cpu },
-  { name: "Computer Vision", icon: Eye },
-  { name: "NLP", icon: MessageSquare },
-  { name: "GenAI", icon: Sparkles },
-  { name: "LangChain", icon: Zap },
-  { name: "Docker", icon: Container },
-  { name: "FastAPI", icon: Server },
-  { name: "SQL", icon: Database },
-  { name: "Hugging Face", icon: Brain },
-  { name: "RAG", icon: Sparkles },
+const nav = [
+  { label: "About", href: "#about" },
+  { label: "Work", href: "#work" },
+  { label: "Writing", href: "#writing" },
+  { label: "Skills", href: "#skills" },
+  { label: "Contact", href: "#contact" },
+];
+
+const tech = [
+  "Python",
+  "PyTorch",
+  "TensorFlow",
+  "Computer Vision",
+  "NLP",
+  "GenAI",
+  "LangChain",
+  "Docker",
+  "FastAPI",
+  "SQL",
+  "Hugging Face",
+  "RAG",
+];
+const techDoubled = [...tech, ...tech];
+
+const log = [
+  "training detection models",
+  "debugging RAG retrieval",
+  "fine-tuning transformers",
+  "containerizing ML pipelines",
+  "tracking objects across cameras",
+  "building AI agents",
+  "status: deep-work-mode",
+];
+const logDoubled = [...log, ...log];
+
+const stats = [
+  { target: 2, suffix: "", pad: true, label: "AI internships shipped" },
+  { target: 10, suffix: "+", pad: false, label: "Projects built" },
+  { target: 4, suffix: "", pad: false, label: "AI domains: CV · NLP · GenAI · RAG" },
+];
+
+const nowCards = [
+  {
+    icon: "⚙",
+    tag: "Working on",
+    title: "Micro ML services at Magure",
+    body: "ANPR, object detection, and multi-camera tracking, plus RAG agents that query databases in plain language.",
+  },
+  {
+    icon: "◇",
+    tag: "Exploring",
+    title: "MCP & local agent workflows",
+    body: "Tighter context, better tools, and fewer handoffs between thought and execution on-device.",
+  },
+  {
+    icon: "☕",
+    tag: "Fuel",
+    title: "Black coffee, double shot",
+    body: "The default compiler for late-night training runs and debugging retrieval scores.",
+  },
+  {
+    icon: "♫",
+    tag: "Now playing",
+    title: "Lo-fi & synthwave",
+    body: "Low-vocal, high-focus — the soundtrack for deep-work mode and long GPU sessions.",
+  },
 ];
 
 const projects = [
   {
-    title: "Virtual Hand Painting",
-    description:
-      "Interactive application enabling users to create digital drawings using hand gestures with MediaPipe and OpenCV.",
-    tech: ["Python", "OpenCV", "MediaPipe"],
-    features: [
-      "Real-time hand tracking",
-      "Dynamic brush sizing",
-      "Multiple colors & eraser",
-    ],
+    num: "01",
+    year: "2024",
+    name: "Virtual Hand Painting",
+    shot: "[ gesture demo ]",
     link: "https://github.com/BEASTBOYJAY/Virtual_hand_painting",
+    desc: "Draw digitally with hand gestures — real-time hand tracking, dynamic brush sizing, and multiple colors, built on MediaPipe and OpenCV.",
+    tags: ["Python", "OpenCV", "MediaPipe"],
   },
   {
-    title: "Local RAG System",
-    description:
-      "Engineered a local RAG system to process PDF documents and generate embeddings for content-based query responses.",
-    tech: ["Python", "Groq", "LLM"],
-    features: [
-      "PDF processing",
-      "Semantic search",
-      "Context-aware responses",
-    ],
+    num: "02",
+    year: "2024",
+    name: "Local RAG System",
+    shot: "[ retrieval flow ]",
     link: "https://github.com/BEASTBOYJAY/Local_RAG",
+    desc: "A fully local RAG pipeline that processes PDFs, builds embeddings, and returns context-aware answers via semantic search.",
+    tags: ["Python", "Groq", "LLM"],
   },
   {
-    title: "GPT Language Model",
-    description:
-      "Developed a GPT-style language model using PyTorch with multi-head attention and transformer architecture.",
-    tech: ["Python", "PyTorch", "LLM"],
-    features: [
-      "Multi-head attention",
-      "Character tokenization",
-      "GPU acceleration",
-    ],
+    num: "03",
+    year: "2024",
+    name: "GPT Language Model",
+    shot: "[ attention map ]",
     link: "https://github.com/BEASTBOYJAY/GPT-dev",
+    desc: "A GPT-style language model in PyTorch — multi-head attention, character tokenization, and GPU-accelerated training from scratch.",
+    tags: ["Python", "PyTorch", "LLM"],
   },
 ];
 
 const experience = [
   {
+    dates: "MAY 2025 — OCT 2025",
     company: "Magure Inc.",
     role: "AI Research Intern",
-    period: "May 2025 - October 2025",
-    highlights: [
-      "Micro ML services for ANPR, object detection, multi-camera tracking",
-      "RAG-based AI agents for database querying",
-      "Containerized ML pipelines with Docker, Kafka, Redis",
+    points: [
+      "Built micro ML services for ANPR, object detection, and multi-camera tracking.",
+      "Developed RAG-based AI agents for natural-language database querying.",
+      "Containerized ML pipelines with Docker, Kafka, and Redis.",
     ],
   },
   {
+    dates: "JUL 2024 — DEC 2024",
     company: "Wyr.ai",
     role: "AI Engineer Intern",
-    period: "July 2024 - Dec 2024",
-    highlights: [
-      "Deep learning models for real-time object detection",
-      "Automated data workflows and scalable APIs",
-      "Autoencoders for feature extraction research",
+    points: [
+      "Trained deep learning models for real-time object detection.",
+      "Automated data workflows and built scalable APIs.",
+      "Researched autoencoders for feature extraction.",
     ],
   },
 ];
 
-const skills = {
-  "Programming": ["Python", "C++", "SQL"],
-  "ML/DL": ["TensorFlow", "PyTorch", "Scikit-learn", "Keras"],
-  "AI Domains": ["Computer Vision", "NLP", "GenAI", "RAG"],
-  "Tools": ["Docker", "FastAPI", "AWS", "Redis", "Kafka", "Git"],
+const skills = [
+  { group: "Programming", items: ["Python", "C++", "SQL"] },
+  { group: "ML / DL", items: ["TensorFlow", "PyTorch", "Scikit-learn", "Keras"] },
+  { group: "AI Domains", items: ["Computer Vision", "NLP", "GenAI", "RAG"] },
+  { group: "Tools", items: ["Docker", "FastAPI", "AWS", "Redis", "Kafka", "Git"] },
+];
+
+const reveal = {
+  initial: { opacity: 0, y: 26 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 0.8, ease: "easeOut" as const },
 };
 
-function TechMarquee({ reverse = false }: { reverse?: boolean }) {
-  const items = [...technologies, ...technologies];
+function SectionLabel({ index, title, right }: { index: string; title: string; right?: React.ReactNode }) {
+  return (
+    <motion.div {...reveal} className="flex items-baseline gap-4 mb-9">
+      <span className="font-mono text-xs tracking-[0.04em] text-accent">
+        {index} / {title}
+      </span>
+      <span className="h-px flex-1 bg-[oklch(0.84_0.012_72)]" />
+      {right}
+    </motion.div>
+  );
+}
+
+function StatCounter({ target, suffix, pad }: { target: number; suffix: string; pad: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [display, setDisplay] = useState(pad ? "00" : "0");
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const dur = 1200;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const t = Math.min(1, (now - start) / dur);
+            const eased = 1 - Math.pow(1 - t, 3);
+            const value = Math.round(target * eased);
+            setDisplay((pad && value < 10 ? "0" + value : "" + value) + suffix);
+            if (t < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+          io.unobserve(el);
+        });
+      },
+      { threshold: 0.5 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [target, suffix, pad]);
 
   return (
-    <div className="overflow-hidden py-6">
-      <div
-        className={`flex gap-8 ${reverse ? "animate-marquee-reverse" : "animate-marquee"}`}
-        style={{ width: "max-content" }}
+    <div ref={ref} className="font-serif font-normal text-[clamp(44px,5.4vw,68px)] leading-none text-accent">
+      {display}
+    </div>
+  );
+}
+
+function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <nav
+      className={`sticky top-0 z-50 flex items-center justify-between px-8 py-4 backdrop-blur-[14px] border-b border-border transition-colors duration-300 ${
+        scrolled ? "bg-background/60" : "bg-background/82"
+      }`}
+    >
+      <a href="#top" className="flex items-center gap-3 text-foreground">
+        <span className="grid place-items-center w-[38px] h-[38px] rounded-[10px] bg-primary text-primary-foreground font-mono font-medium text-[15px]">
+          JS
+        </span>
+        <span className="flex flex-col leading-[1.1]">
+          <span className="font-bold text-[15px]">Jay Sinha</span>
+          <span className="font-mono text-[11px] text-[oklch(0.52_0.02_50)]">AI Engineer · ML</span>
+        </span>
+      </a>
+      <div className="flex items-center gap-7">
+        <div className="hidden md:flex gap-[26px]">
+          {nav.map((n) => (
+            <a
+              key={n.href}
+              href={n.href}
+              className="text-[14px] font-medium text-[oklch(0.38_0.012_55)] hover:text-accent transition-colors"
+            >
+              {n.label}
+            </a>
+          ))}
+        </div>
+        <a
+          href="#contact"
+          className="inline-flex items-center gap-1.5 px-4 py-[9px] rounded-full bg-primary text-primary-foreground text-[13px] font-semibold hover:bg-[oklch(0.28_0.006_55)] transition-colors"
+        >
+          Get in touch →
+        </a>
+      </div>
+    </nav>
+  );
+}
+
+function HeroSection() {
+  return (
+    <header id="top" className="max-w-[1120px] mx-auto px-8 pt-[88px] pb-14">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="inline-flex items-center gap-2.5 px-[14px] py-[7px] font-mono text-xs tracking-[0.04em] uppercase text-[oklch(0.50_0.02_50)]"
       >
-        {items.map((tech, idx) => (
-          <div
-            key={idx}
-            className="flex items-center gap-3 px-7 py-3.5 bg-card/60 backdrop-blur-sm rounded-full border border-border hover:border-accent hover:bg-card/80 hover:scale-105 transition-all duration-300 group shadow-sm cursor-pointer"
+        <span className="w-2 h-2 rounded-full bg-accent animate-pulse-dot" />
+        Currently AI Research Intern @ Magure — open to interesting problems
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-[1.35fr_0.65fr] gap-12 items-center mt-7">
+        <div>
+          <h1 className="font-serif font-normal text-[clamp(60px,10vw,142px)] leading-[0.9] tracking-[-0.02em]">
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.05 }}
+              className="block"
+            >
+              Engineer.
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
+              className="block"
+            >
+              Researcher.
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.25 }}
+              className="block text-accent"
+            >
+              Builder.
+            </motion.span>
+          </h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.35 }}
+            className="mt-[26px] max-w-[520px] text-lg leading-[1.55] text-[oklch(0.44_0.012_55)]"
           >
-            <tech.icon className="w-5 h-5 text-primary group-hover:text-accent transition-colors duration-300" />
-            <span className="text-sm font-semibold whitespace-nowrap tracking-tight group-hover:text-accent transition-colors duration-300">{tech.name}</span>
+            Building intelligent systems with deep learning, computer vision, NLP, and generative AI — turning
+            research into things that run in production.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.45 }}
+            className="flex gap-3.5 mt-[30px]"
+          >
+            <a
+              href="#work"
+              className="px-[22px] py-[13px] rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:bg-[oklch(0.28_0.006_55)] transition-colors"
+            >
+              See the work →
+            </a>
+            <a
+              href="https://github.com/beastboyjay"
+              className="px-[22px] py-[13px] rounded-full border border-[oklch(0.80_0.012_72)] bg-[oklch(0.99_0.004_85)] text-[oklch(0.26_0.008_55)] font-semibold text-sm hover:border-accent hover:text-accent transition-colors"
+            >
+              GitHub ↗
+            </a>
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+        >
+          <div className="w-full aspect-[4/5] rounded-2xl border border-[oklch(0.32_0.01_55)] bg-[oklch(0.185_0.008_55)] overflow-hidden flex flex-col shadow-[0_1px_2px_oklch(0.3_0.02_50/.1),0_24px_54px_oklch(0.3_0.02_50/.16)]">
+            <div className="flex items-center gap-[7px] px-[15px] py-[13px] border-b border-[oklch(0.28_0.01_55)]">
+              <span className="w-[11px] h-[11px] rounded-full bg-[oklch(0.62_0.16_25)]" />
+              <span className="w-[11px] h-[11px] rounded-full bg-[oklch(0.75_0.13_75)]" />
+              <span className="w-[11px] h-[11px] rounded-full bg-[oklch(0.68_0.14_145)]" />
+              <span className="ml-2 font-mono text-[11px] text-[oklch(0.58_0.012_60)]">jay@sinha: ~</span>
+            </div>
+            <div className="px-[18px] py-5 font-mono text-[12.5px] leading-[2.05] text-[oklch(0.84_0.012_80)] flex flex-col justify-center flex-1">
+              <div>
+                <span className="text-[oklch(0.72_0.15_40)]">$</span> whoami
+              </div>
+              <div className="text-[oklch(0.60_0.012_60)] mb-1.5">AI Engineer · ML Developer</div>
+              <div>
+                <span className="text-[oklch(0.72_0.15_40)]">$</span> cat stack.txt
+              </div>
+              <div className="text-[oklch(0.60_0.012_60)] mb-1.5">PyTorch · RAG · CV · NLP · GenAI</div>
+              <div>
+                <span className="text-[oklch(0.72_0.15_40)]">$</span> status --now
+              </div>
+              <div className="text-[oklch(0.60_0.012_60)] mb-1.5">shipping intelligent systems</div>
+              <div>
+                <span className="text-[oklch(0.72_0.15_40)]">$</span>{" "}
+                <span className="text-[oklch(0.72_0.15_40)] animate-blink-cursor">▋</span>
+              </div>
+            </div>
           </div>
+        </motion.div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.55 }}
+        className="grid grid-cols-3 gap-6 mt-14 border-t border-[oklch(0.82_0.012_72)] pt-8"
+      >
+        {stats.map((s) => (
+          <div key={s.label}>
+            <StatCounter target={s.target} suffix={s.suffix} pad={s.pad} />
+            <div className="mt-2 text-sm text-[oklch(0.46_0.012_55)]">{s.label}</div>
+          </div>
+        ))}
+      </motion.div>
+    </header>
+  );
+}
+
+function TechMarquee() {
+  return (
+    <div className="border-y border-border py-4 overflow-hidden bg-[oklch(0.94_0.01_80)]">
+      <div className="flex gap-3 w-max animate-marquee">
+        {techDoubled.map((t, i) => (
+          <span
+            key={i}
+            className="px-[15px] py-[7px] border border-[oklch(0.82_0.012_72)] bg-[oklch(0.99_0.004_85)] rounded-full font-mono text-[12.5px] text-[oklch(0.40_0.012_55)] whitespace-nowrap"
+          >
+            {t}
+          </span>
         ))}
       </div>
     </div>
   );
 }
 
-function Navbar({ isDark, setIsDark }: { isDark: boolean; setIsDark: (value: boolean) => void }) {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+function NowSection() {
   return (
-    <motion.nav
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 px-6 py-5 transition-all duration-300 ${scrolled ? "py-3" : ""
-        }`}
-    >
-      <div className={`max-w-7xl mx-auto flex items-center justify-between bg-card/70 backdrop-blur-2xl rounded-full px-8 py-4 border border-border/50 shadow-lg transition-all duration-300 ${scrolled ? "py-3 shadow-xl" : ""
-        }`}>
-        <motion.span
-          className="text-xl font-bold gradient-text cursor-pointer"
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 400 }}
-        >
-          JS
-        </motion.span>
-        <div className="hidden md:flex items-center gap-10">
-          <a href="#about" className="text-sm font-medium text-muted-foreground hover:text-accent hover:scale-110 transition-all duration-200">About</a>
-          <a href="#experience" className="text-sm font-medium text-muted-foreground hover:text-accent hover:scale-110 transition-all duration-200">Experience</a>
-          <a href="#projects" className="text-sm font-medium text-muted-foreground hover:text-accent hover:scale-110 transition-all duration-200">Projects</a>
-          <a href="#skills" className="text-sm font-medium text-muted-foreground hover:text-accent hover:scale-110 transition-all duration-200">Skills</a>
-          <a href="#contact" className="text-sm font-medium text-muted-foreground hover:text-accent hover:scale-110 transition-all duration-200">Contact</a>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full hover:bg-accent/20 hover:text-accent hover:scale-110 transition-all duration-200"
-            onClick={() => setIsDark(!isDark)}
-          >
-            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </Button>
-          <a href="https://github.com/beastboyjay" target="_blank" rel="noopener noreferrer" className="group relative">
-            <Button variant="ghost" size="icon" className="rounded-full hover:bg-accent/20 hover:text-accent hover:scale-110 transition-all duration-200">
-              <Github className="w-4 h-4" />
-            </Button>
-            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-card border border-border rounded-lg text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
-              GitHub
-            </span>
-          </a>
-          <a href="https://www.linkedin.com/in/beastboyjay/" target="_blank" rel="noopener noreferrer" className="group relative">
-            <Button variant="ghost" size="icon" className="rounded-full hover:bg-accent/20 hover:text-accent hover:scale-110 transition-all duration-200">
-              <Linkedin className="w-4 h-4" />
-            </Button>
-            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-card border border-border rounded-lg text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg">
-              LinkedIn
-            </span>
-          </a>
-        </div>
-      </div>
-    </motion.nav>
-  );
-}
-
-function HeroSection() {
-  return (
-    <section className="min-h-screen flex flex-col justify-center relative overflow-hidden px-6">
-      <div className="max-w-7xl mx-auto w-full pt-40 pb-16">
-        <motion.div
-          className="text-center md:text-left"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <motion.div
-            className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-primary/10 rounded-full border border-primary/20 mb-8 shadow-sm hover:text-accent hover:border-accent hover:bg-accent/10 transition-all duration-300 cursor-pointer"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-          >
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-semibold text-primary">AI Engineer & ML Developer</span>
-          </motion.div>
-
-          <motion.h1
-            className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-[1.1]"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
-            <span className="block text-foreground mb-3">Hi, I&apos;m</span>
-            <span className="gradient-text">Jay Sinha</span>
-          </motion.h1>
-
-          <motion.div
-            className="text-xl md:text-2xl text-muted-foreground max-w-3xl mb-10 leading-relaxed flex flex-wrap items-center gap-2 justify-center md:justify-start"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-          >
-            Building intelligent systems with
-            <TextType
-              text={['Deep Learning', 'Computer Vision', 'Generative AI']}
-              className="px-2 sm:px-2 md:px-3 bg-primary/10 backdrop-blur-sm text-primary py-0.5 sm:py-1 md:py-2 rounded-lg inline-flex transition-all duration-300 border border-transparent hover:border-accent hover:text-accent hover:bg-accent/10 hover:scale-105 cursor-pointer"
-              loop={true}
-              pauseDuration={2000}
-            />
-          </motion.div>
-
-          <motion.div
-            className="flex flex-col sm:flex-row gap-5 justify-center md:justify-start"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-          >
-            <a href="#contact">
-              <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 hover:text-primary-foreground hover:scale-105 text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold">
-                <Mail className="w-5 h-5 mr-2" />
-                Get in Touch
-              </Button>
-            </a>
-          </motion.div>
-        </motion.div>
-      </div>
-
-      <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.5 }}
+    <section id="about" className="max-w-[1120px] mx-auto px-8 pt-[92px] pb-10">
+      <SectionLabel
+        index="01"
+        title="NOW"
+        right={<span className="font-mono text-xs text-[oklch(0.55_0.02_50)]">UPDATED JUL 2026</span>}
+      />
+      <motion.p
+        {...reveal}
+        className="font-serif font-normal text-[clamp(30px,3.9vw,48px)] leading-[1.24] max-w-[900px] tracking-[-0.01em]"
       >
-        <ChevronDown className="w-8 h-8 text-muted-foreground" />
-      </motion.div>
-    </section>
-  );
-}
+        A computer science undergrad turning theory into practical AI —{" "}
+        <span className="text-accent">chasing the parts of the field still being figured out.</span>
+      </motion.p>
 
-function TechShowcaseSection() {
-  return (
-    <section className="py-20 px-6 border-y border-border/50">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-        >
-          <TechMarquee />
-        </motion.div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-11">
+        {nowCards.map((c) => (
+          <motion.div
+            key={c.title}
+            {...reveal}
+            className="p-[26px] rounded-2xl border border-border bg-[oklch(0.99_0.004_85)] shadow-[0_1px_2px_oklch(0.3_0.02_50/.04)]"
+          >
+            <div className="flex items-center gap-2.5 mb-3.5">
+              <span className="text-lg">{c.icon}</span>
+              <span className="font-mono text-[11px] tracking-[0.06em] uppercase text-[oklch(0.50_0.02_50)]">
+                {c.tag}
+              </span>
+            </div>
+            <h3 className="text-xl font-bold leading-[1.28] mb-2.5">{c.title}</h3>
+            <p className="text-sm leading-[1.55] text-[oklch(0.46_0.012_55)]">{c.body}</p>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="mt-5 rounded-xl border border-border bg-[oklch(0.94_0.01_80)] py-[13px] overflow-hidden">
+        <div className="flex gap-2.5 w-max animate-marquee-slow">
+          {logDoubled.map((l, i) => (
+            <span key={i} className="font-mono text-xs text-[oklch(0.52_0.015_55)] whitespace-nowrap">
+              <span className="text-accent">Log&gt;</span> {l}
+              <span className="ml-2.5 text-[oklch(0.75_0.012_72)]">/</span>
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-function AboutSection() {
+function WorkSection() {
   return (
-    <section id="about" className="py-32 px-6">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center">
-            <span className="gradient-text">About Me</span>
-          </h2>
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <motion.div
-              className="space-y-7"
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-            >
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                I&apos;m a driven computer science undergraduate passionate about AI, ML, and generative AI,
-                with strong data science expertise and a focus on transforming theoretical concepts into
-                practical innovations.
-              </p>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Eager to deliver cutting-edge solutions in the dynamic and transformative field of
-                artificial intelligence and generative technologies.
-              </p>
-              <div className="flex items-start gap-4 pt-6">
-                <Badge variant="secondary" className="px-5 py-3 text-sm font-medium max-w-sm hover:scale-105 hover:text-accent hover:border-accent hover:border-2 hover:bg-accent/10 transition-all duration-200 cursor-pointer">
-                  <Brain className="w-4 h-4 mr-2 flex-shrink-0" />
-                  <span>B.Tech Computer Science</span>
-                </Badge>
+    <section id="work" className="max-w-[1120px] mx-auto px-8 pt-[72px] pb-10">
+      <SectionLabel
+        index="02"
+        title="SELECTED WORK"
+        right={
+          <a href="https://github.com/beastboyjay" className="font-mono text-xs hover:text-accent transition-colors">
+            VIEW ALL ↗
+          </a>
+        }
+      />
+      <motion.h2
+        {...reveal}
+        className="font-serif font-normal text-[clamp(34px,4.8vw,58px)] leading-[1.04] max-w-[780px] tracking-[-0.01em] mb-11"
+      >
+        Systems I built to <span className="text-accent">see, read, and generate.</span>
+      </motion.h2>
+
+      <div className="flex flex-col gap-[18px]">
+        {projects.map((p) => (
+          <motion.a
+            key={p.name}
+            href={p.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            {...reveal}
+            className="grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr] gap-9 p-[26px] rounded-[18px] border border-border bg-[oklch(0.99_0.004_85)] text-inherit shadow-[0_1px_2px_oklch(0.3_0.02_50/.04)] transition-all duration-[250ms] hover:border-accent hover:-translate-y-1 hover:shadow-[0_12px_34px_oklch(0.3_0.02_50/.1)]"
+          >
+            <div className="aspect-[16/10] rounded-xl bg-[repeating-linear-gradient(135deg,oklch(0.95_0.006_80)_0_12px,oklch(0.92_0.008_78)_12px_24px)] grid place-items-center border border-[oklch(0.86_0.012_72)]">
+              <span className="font-mono text-xs text-[oklch(0.55_0.02_50)]">{p.shot}</span>
+            </div>
+            <div className="flex flex-col justify-center">
+              <div className="font-mono text-xs text-[oklch(0.50_0.015_55)] mb-3">
+                {p.num} · {p.year}
               </div>
-            </motion.div>
-            <motion.div
-              className="relative"
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-            >
-              <div className="aspect-square rounded-3xl bg-gradient-to-br from-primary/20 via-accent/10 to-accent/20 p-1.5 shadow-2xl">
-                <div className="w-full h-full rounded-3xl bg-card flex items-center justify-center backdrop-blur-xl">
-                  <BrainCircuit className="w-40 h-40 text-primary/40 animate-float" />
-                </div>
+              <h3 className="font-serif font-normal text-[34px] leading-[1.04] mb-3">{p.name}</h3>
+              <p className="text-[15px] leading-[1.55] text-[oklch(0.46_0.012_55)] mb-[18px]">{p.desc}</p>
+              <div className="flex flex-wrap gap-2">
+                {p.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-[5px] border border-[oklch(0.84_0.012_72)] bg-[oklch(0.96_0.006_80)] rounded-full font-mono text-[11.5px] text-[oklch(0.40_0.012_55)]"
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
-            </motion.div>
-          </div>
-        </motion.div>
+            </div>
+          </motion.a>
+        ))}
       </div>
     </section>
   );
@@ -349,115 +483,72 @@ function AboutSection() {
 
 function ExperienceSection() {
   return (
-    <section id="experience" className="py-32 px-6">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center">
-            <span className="gradient-text">Experience</span>
-          </h2>
-          <div className="space-y-8 max-w-5xl mx-auto">
-            {experience.map((exp, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-              >
-                <Card className="bg-card/60 border border-border/50 hover:border-primary/40 transition-all duration-300 card-hover backdrop-blur-sm shadow-lg">
-                  <CardContent className="p-8 md:p-10">
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-6 gap-4">
-                      <div className="space-y-2">
-                        <h3 className="text-2xl font-bold text-foreground">{exp.company}</h3>
-                        <p className="text-primary font-semibold text-lg">{exp.role}</p>
-                      </div>
-                      <Badge variant="outline" className="w-fit px-4 py-2 text-sm font-medium border-2">
-                        {exp.period}
-                      </Badge>
-                    </div>
-                    <ul className="space-y-4">
-                      {exp.highlights.map((highlight, i) => (
-                        <li key={i} className="flex items-start gap-4 text-muted-foreground text-base">
-                          <Zap className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                          <span className="leading-relaxed">{highlight}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+    <section id="experience" className="max-w-[1120px] mx-auto px-8 pt-[72px] pb-10">
+      <SectionLabel index="03" title="EXPERIENCE" />
+      <div className="flex flex-col">
+        {experience.map((e) => (
+          <motion.div
+            key={e.company}
+            {...reveal}
+            className="grid grid-cols-1 md:grid-cols-[0.5fr_1.5fr] gap-9 py-7 border-t border-[oklch(0.84_0.012_72)]"
+          >
+            <div>
+              <div className="font-mono text-xs text-[oklch(0.50_0.015_55)]">{e.dates}</div>
+            </div>
+            <div>
+              <h3 className="text-[22px] font-bold mb-1">{e.company}</h3>
+              <div className="text-[15px] text-accent mb-4">{e.role}</div>
+              <ul className="flex flex-col gap-2.5">
+                {e.points.map((pt) => (
+                  <li key={pt} className="flex gap-3 text-[15px] leading-[1.5] text-[oklch(0.42_0.012_55)]">
+                    <span className="text-accent font-mono">→</span>
+                    {pt}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
 }
 
-function ProjectsSection() {
+function WritingSection() {
   return (
-    <section id="projects" className="py-32 px-6">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center">
-            <span className="gradient-text">Featured Projects</span>
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-              >
-                <Card className="h-full bg-card/60 border border-border/50 hover:border-primary/40 transition-all duration-300 card-hover group backdrop-blur-sm shadow-lg">
-                  <CardContent className="p-8 flex flex-col h-full">
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="p-3 bg-primary/10 rounded-2xl group-hover:bg-primary/20 transition-colors duration-300">
-                        <Code2 className="w-8 h-8 text-primary" />
-                      </div>
-                      <a href={project.link} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors duration-300 cursor-pointer" />
-                      </a>
-                    </div>
-                    <h3 className="text-2xl font-bold mb-3 text-foreground">{project.title}</h3>
-                    <p className="text-muted-foreground text-base mb-6 flex-grow leading-relaxed">
-                      {project.description}
-                    </p>
-                    <div className="space-y-5">
-                      <div className="flex flex-wrap gap-2.5">
-                        {project.tech.map((t, i) => (
-                          <Badge key={i} variant="secondary" className="text-xs font-semibold px-3 py-1.5">
-                            {t}
-                          </Badge>
-                        ))}
-                      </div>
-                      <ul className="space-y-2.5">
-                        {project.features.map((f, i) => (
-                          <li key={i} className="text-sm text-muted-foreground flex items-center gap-3">
-                            <div className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                            <span>{f}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+    <section id="writing" className="bg-[oklch(0.928_0.012_78)] border-y border-[oklch(0.86_0.012_72)] mt-8">
+      <div className="max-w-[1120px] mx-auto px-8 py-[72px]">
+        <SectionLabel index="04" title="WRITING" />
+        <div className="grid grid-cols-1 md:grid-cols-[1.3fr_0.7fr] gap-10 items-center">
+          <motion.div {...reveal}>
+            <h2 className="font-serif font-normal text-[clamp(32px,4.2vw,52px)] leading-[1.05] tracking-[-0.01em]">
+              I write about AI, ML &amp; <span className="text-accent">building things.</span>
+            </h2>
+            <p className="mt-5 max-w-[520px] text-[17px] leading-[1.55] text-[oklch(0.44_0.012_55)]">
+              Notes from the workbench — model experiments, RAG pipelines, and lessons from turning papers into
+              production code.
+            </p>
+            <a
+              href="https://blogs.jaysinha.dev"
+              className="inline-flex items-center gap-2 mt-[26px] px-[22px] py-[13px] rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:bg-[oklch(0.28_0.006_55)] transition-colors"
+            >
+              Read the blog →
+            </a>
+          </motion.div>
+          <motion.div
+            {...reveal}
+            className="aspect-square rounded-[18px] border border-[oklch(0.82_0.012_72)] bg-[oklch(0.985_0.004_85)] grid place-items-center relative overflow-hidden"
+          >
+            <span className="font-mono text-[13px] text-[oklch(0.50_0.02_50)]">~/blog $ ls</span>
+            <span className="absolute bottom-[22px] left-[22px] right-[22px] font-mono text-[11px] leading-[1.9] text-[oklch(0.60_0.015_55)]">
+              rag-from-scratch.md
+              <br />
+              attention-notes.md
+              <br />
+              shipping-ml.md<span className="text-accent">_</span>
+            </span>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -465,47 +556,30 @@ function ProjectsSection() {
 
 function SkillsSection() {
   return (
-    <section id="skills" className="py-32 px-6">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center">
-            <span className="gradient-text">Skills & Technologies</span>
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {Object.entries(skills).map(([category, items], idx) => (
-              <motion.div
-                key={category}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-              >
-                <Card className="bg-card/60 border border-border/50 h-full hover:border-primary/40 card-hover backdrop-blur-sm shadow-lg">
-                  <CardContent className="p-8">
-                    <div className="mb-6 flex items-center gap-3">
-                      <div className="p-2 bg-primary/10 rounded-xl">
-                        <Award className="w-5 h-5 text-primary" />
-                      </div>
-                      <h3 className="text-xl font-bold text-primary">{category}</h3>
-                    </div>
-                    <div className="flex flex-wrap gap-2.5">
-                      {items.map((item, i) => (
-                        <Badge key={i} variant="outline" className="text-sm font-medium px-3.5 py-2 border-2">
-                          {item}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+    <section id="skills" className="max-w-[1120px] mx-auto px-8 pt-20 pb-10">
+      <SectionLabel index="05" title="SKILLS" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {skills.map((g) => (
+          <motion.div
+            key={g.group}
+            {...reveal}
+            className="p-[26px] rounded-2xl border border-border bg-[oklch(0.99_0.004_85)]"
+          >
+            <h3 className="font-mono text-[11px] text-[oklch(0.50_0.02_50)] uppercase tracking-[0.08em] mb-4">
+              {g.group}
+            </h3>
+            <div className="flex flex-wrap gap-[9px]">
+              {g.items.map((item) => (
+                <span
+                  key={item}
+                  className="px-3.5 py-2 border border-[oklch(0.84_0.012_72)] bg-[oklch(0.96_0.006_80)] rounded-[10px] text-sm font-medium text-[oklch(0.30_0.01_55)]"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
@@ -513,85 +587,66 @@ function SkillsSection() {
 
 function ContactSection() {
   return (
-    <section id="contact" className="py-32 px-6">
-      <div className="max-w-5xl mx-auto text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+    <section id="contact" className="max-w-[1120px] mx-auto px-8 pt-[92px] pb-10">
+      <SectionLabel index="06" title="CONTACT" />
+      <motion.h2
+        {...reveal}
+        className="font-serif font-normal text-[clamp(44px,7vw,100px)] leading-[0.98] tracking-[-0.02em] max-w-[900px]"
+      >
+        Got an <span className="text-accent">interesting problem?</span> Let&apos;s talk.
+      </motion.h2>
+      <motion.p {...reveal} className="mt-[22px] max-w-[540px] text-lg leading-[1.55] text-[oklch(0.44_0.012_55)]">
+        I&apos;m always open to conversations about AI, ML, and generative tech — especially the kind that don&apos;t
+        have an obvious answer yet. I read every message.
+      </motion.p>
+      <motion.div {...reveal} className="flex flex-wrap gap-3.5 mt-[34px]">
+        <a
+          href="mailto:jay31sinha@gmail.com"
+          className="px-[22px] py-[14px] rounded-full bg-primary text-primary-foreground font-semibold text-[15px] hover:bg-[oklch(0.28_0.006_55)] transition-colors"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-8">
-            <span className="gradient-text">Let&apos;s Connect</span>
-          </h2>
-          <p className="text-xl text-muted-foreground mb-14 max-w-3xl mx-auto leading-relaxed">
-            I&apos;m always open to discussing new opportunities, innovative projects,
-            or just having a chat about AI and technology.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-5 justify-center mb-10">
-            <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 hover:text-primary-foreground hover:scale-105 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold text-base px-8 py-6" onClick={() => window.location.href = "mailto:jay31sinha@gmail.com"}>
-              <Mail className="w-5 h-5 mr-2" />
-              jay31sinha@gmail.com
-            </Button>
-            <Button size="lg" variant="outline" className="rounded-full border-2 hover:bg-accent/20 hover:text-accent hover:border-accent hover:scale-105 transition-all duration-300 font-semibold text-base px-8 py-6" onClick={() => window.open("https://www.linkedin.com/in/beastboyjay/", "_blank")}>
-              <Linkedin className="w-5 h-5 mr-2" />
-              LinkedIn
-            </Button>
-            <Button size="lg" variant="outline" className="rounded-full border-2 hover:bg-accent/20 hover:text-accent hover:border-accent hover:scale-105 transition-all duration-300 font-semibold text-base px-8 py-6" onClick={() => window.open("https://github.com/beastboyjay", "_blank")}>
-              <Github className="w-5 h-5 mr-2" />
-              GitHub
-            </Button>
-          </div>
-          <div className="mt-10 text-base text-muted-foreground font-medium">
-            <p>Raipur, Chhattisgarh</p>
-          </div>
-        </motion.div>
-      </div>
+          jay31sinha@gmail.com ↗
+        </a>
+        <a
+          href="https://www.linkedin.com/in/beastboyjay/"
+          className="px-[22px] py-[14px] rounded-full border border-[oklch(0.80_0.012_72)] bg-[oklch(0.99_0.004_85)] text-[oklch(0.26_0.008_55)] font-semibold text-[15px] hover:border-accent hover:text-accent transition-colors"
+        >
+          LinkedIn ↗
+        </a>
+        <a
+          href="https://github.com/beastboyjay"
+          className="px-[22px] py-[14px] rounded-full border border-[oklch(0.80_0.012_72)] bg-[oklch(0.99_0.004_85)] text-[oklch(0.26_0.008_55)] font-semibold text-[15px] hover:border-accent hover:text-accent transition-colors"
+        >
+          GitHub ↗
+        </a>
+      </motion.div>
     </section>
   );
 }
 
 function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="py-10 px-6 border-t border-border/50">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-        <p className="text-sm text-muted-foreground font-medium">
-          © {currentYear} Jay Sinha. All rights reserved.
-        </p>
-        <p className="text-sm text-muted-foreground font-medium">
-          Built with passion for AI
-        </p>
+    <footer className="max-w-[1120px] mx-auto px-8 pt-12 pb-16 border-t border-[oklch(0.84_0.012_72)] flex flex-wrap items-center justify-between gap-4">
+      <div className="text-sm text-[oklch(0.48_0.012_55)]">© 2026 Jay Sinha</div>
+      <div className="font-mono text-xs text-[oklch(0.55_0.02_50)]">
+        Built in Raipur, Chhattisgarh · AI, ML &amp; code
       </div>
     </footer>
   );
 }
 
 export default function HomePage() {
-  const [isDark, setIsDark] = useState(true);
-
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDark]);
-
   return (
-    <main className="min-h-screen">
-      <VantaBackground isDark={isDark}>
-        <Navbar isDark={isDark} setIsDark={setIsDark} />
-        <HeroSection />
-        <TechShowcaseSection />
-        <AboutSection />
-        <ExperienceSection />
-        <ProjectsSection />
-        <SkillsSection />
-        <ContactSection />
-        <Footer />
-      </VantaBackground>
+    <main className="min-h-screen bg-background text-foreground">
+      <Navbar />
+      <HeroSection />
+      <TechMarquee />
+      <NowSection />
+      <WorkSection />
+      <ExperienceSection />
+      <WritingSection />
+      <SkillsSection />
+      <ContactSection />
+      <Footer />
     </main>
   );
 }
