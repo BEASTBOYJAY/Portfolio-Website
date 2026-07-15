@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 const nav = [
   { label: "About", href: "#about" },
@@ -24,38 +25,46 @@ const tech = [
   "SQL",
   "Hugging Face",
   "RAG",
+  "AWS",
+  "Next.js",
+  "React",
+  "TypeScript",
+  "PostgreSQL",
+  "AI Agents",
+  "Flutter",
+  "Firebase",
 ];
 const techDoubled = [...tech, ...tech];
 
 const log = [
-  "training detection models",
+  "building full-stack AI apps",
+  "shipping AI agents to prod",
+  "deploying on GCP",
   "debugging RAG retrieval",
   "fine-tuning transformers",
   "containerizing ML pipelines",
-  "tracking objects across cameras",
-  "building AI agents",
   "status: deep-work-mode",
 ];
 const logDoubled = [...log, ...log];
 
 const stats = [
-  { target: 2, suffix: "", pad: true, label: "AI internships shipped" },
-  { target: 10, suffix: "+", pad: false, label: "Projects built" },
-  { target: 4, suffix: "", pad: false, label: "AI domains: CV · NLP · GenAI · RAG" },
+  { target: 20, suffix: "+", pad: false, label: "Skills fulfilled via vibe coding" },
+  { target: 3, suffix: "", pad: true, label: "AI internships shipped" },
+  { target: 15, suffix: "+", pad: false, label: "Projects built" },
 ];
 
 const nowCards = [
   {
     icon: "⚙",
     tag: "Working on",
-    title: "Micro ML services at Magure",
-    body: "ANPR, object detection, and multi-camera tracking, plus RAG agents that query databases in plain language.",
+    title: "Building app MVPs & AI agents",
+    body: "Kin, a one-button check-in app for parents and guardians with no location tracking, plus Jotgen, an agent that writes well-researched blogs with near-zero hallucination.",
   },
   {
     icon: "◇",
     tag: "Exploring",
-    title: "MCP & local agent workflows",
-    body: "Tighter context, better tools, and fewer handoffs between thought and execution on-device.",
+    title: "Getting comfortable with not knowing",
+    body: "Trading finished answers for better questions — every project is a rough draft, and the only failure is standing still.",
   },
   {
     icon: "☕",
@@ -103,8 +112,21 @@ const projects = [
 
 const experience = [
   {
+    dates: "JAN 2026 — JUL 2026",
+    company: "Jouleworx",
+    companyUrl: "https://jouleworx.com/",
+    role: "Tech Generalist Intern",
+    points: [
+      "Architected and deployed autonomous AI agents, integrating LLMs into production on high-performance infrastructure.",
+      "Built and maintained scalable Next.js web apps, bridging complex backends with responsive frontends.",
+      "Designed secure, cost-optimized cloud environments and CI/CD pipelines for containerized GCP deployments.",
+      "Currently building the company's first product MVP, gearing up for public launch.",
+    ],
+  },
+  {
     dates: "MAY 2025 — OCT 2025",
     company: "Magure Inc.",
+    companyUrl: "https://www.magureinc.com/",
     role: "AI Research Intern",
     points: [
       "Built micro ML services for ANPR, object detection, and multi-camera tracking.",
@@ -124,12 +146,28 @@ const experience = [
   },
 ];
 
-const skills = [
-  { group: "Programming", items: ["Python", "C++", "SQL"] },
-  { group: "ML / DL", items: ["TensorFlow", "PyTorch", "Scikit-learn", "Keras"] },
-  { group: "AI Domains", items: ["Computer Vision", "NLP", "GenAI", "RAG"] },
-  { group: "Tools", items: ["Docker", "FastAPI", "AWS", "Redis", "Kafka", "Git"] },
+type SkillSize = "banner" | "wide" | "md" | "sm";
+
+const skills: { group: string; items: string[]; size: SkillSize; placement: string }[] = [
+  { group: "AI Domains", items: ["Computer Vision", "NLP", "GenAI", "RAG", "AI Agents", "Vector Databases", "Prompt Engineering", "LLM Fine-tuning"], size: "banner", placement: "lg:col-start-3 lg:row-start-1" },
+  { group: "ML / DL", items: ["TensorFlow", "PyTorch", "Scikit-learn", "Keras"], size: "md", placement: "lg:col-start-3 lg:row-start-2" },
+  { group: "Frontend (Vibe-Coded)", items: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"], size: "md", placement: "lg:col-start-4 lg:row-start-2" },
+  { group: "Backend", items: ["FastAPI", "Node.js", "PostgreSQL", "MongoDB"], size: "sm", placement: "lg:col-start-1 lg:row-start-3" },
+  { group: "Cloud & DevOps", items: ["Docker", "AWS", "GCP", "Terraform", "CI/CD"], size: "wide", placement: "lg:col-start-2 lg:row-start-3" },
+  { group: "Programming", items: ["Python", "C++", "SQL"], size: "sm", placement: "lg:col-start-4 lg:row-start-3" },
+  { group: "App Development", items: ["Flutter", "Dart", "Firebase"], size: "sm", placement: "lg:col-start-1 lg:row-start-4" },
+  { group: "Tools", items: ["Redis", "Kafka", "Git"], size: "sm", placement: "lg:col-start-2 lg:row-start-4" },
+  { group: "Agentic AI & LLM Ops", items: ["MCP", "Multi-Agent Orchestration", "Local LLM Workflows", "Efficient Fine-tuning (LoRA/QLoRA)"], size: "banner", placement: "lg:col-start-3 lg:row-start-4" },
 ];
+
+const bentoSpan: Record<SkillSize, string> = {
+  banner: "sm:col-span-2 lg:col-span-2",
+  wide: "lg:col-span-2",
+  md: "",
+  sm: "",
+};
+
+const staggerDelay = (i: number) => Math.min(i * 0.05, 0.3);
 
 const reveal = {
   initial: { opacity: 0, y: 26 },
@@ -199,9 +237,8 @@ function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 flex items-center justify-between px-8 py-4 backdrop-blur-[14px] border-b border-border transition-colors duration-300 ${
-        scrolled ? "bg-background/60" : "bg-background/82"
-      }`}
+      className={`sticky top-0 z-50 flex items-center justify-between px-8 py-4 backdrop-blur-[14px] border-b border-border transition-colors duration-300 ${scrolled ? "bg-background/60" : "bg-background/82"
+        }`}
     >
       <a href="#top" className="flex items-center gap-3 text-foreground">
         <span className="grid place-items-center w-[38px] h-[38px] rounded-[10px] bg-primary text-primary-foreground font-mono font-medium text-[15px]">
@@ -209,7 +246,7 @@ function Navbar() {
         </span>
         <span className="flex flex-col leading-[1.1]">
           <span className="font-bold text-[15px]">Jay Sinha</span>
-          <span className="font-mono text-[11px] text-[oklch(0.52_0.02_50)]">AI Engineer · ML</span>
+          <span className="font-mono text-[11px] text-[oklch(0.52_0.02_50)]">AI Engineer · FullStack Developer</span>
         </span>
       </a>
       <div className="flex items-center gap-7">
@@ -245,7 +282,7 @@ function HeroSection() {
         className="inline-flex items-center gap-2.5 px-[14px] py-[7px] font-mono text-xs tracking-[0.04em] uppercase text-[oklch(0.50_0.02_50)]"
       >
         <span className="w-2 h-2 rounded-full bg-accent animate-pulse-dot" />
-        Currently AI Research Intern @ Magure — open to interesting problems
+        Currently Founding Engineer @ Jouleworx — open to interesting problems
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-[1.35fr_0.65fr] gap-12 items-center mt-7">
@@ -324,7 +361,7 @@ function HeroSection() {
               <div>
                 <span className="text-[oklch(0.72_0.15_40)]">$</span> whoami
               </div>
-              <div className="text-[oklch(0.60_0.012_60)] mb-1.5">AI Engineer · ML Developer</div>
+              <div className="text-[oklch(0.60_0.012_60)] mb-1.5">AI Engineer · FullStack Developer</div>
               <div>
                 <span className="text-[oklch(0.72_0.15_40)]">$</span> cat stack.txt
               </div>
@@ -346,10 +383,10 @@ function HeroSection() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.55 }}
-        className="grid grid-cols-3 gap-6 mt-14 border-t border-[oklch(0.82_0.012_72)] pt-8"
+        className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-14 border-t border-[oklch(0.82_0.012_72)] pt-8"
       >
         {stats.map((s) => (
-          <div key={s.label}>
+          <div key={s.label} className="flex flex-col items-center text-center">
             <StatCounter target={s.target} suffix={s.suffix} pad={s.pad} />
             <div className="mt-2 text-sm text-[oklch(0.46_0.012_55)]">{s.label}</div>
           </div>
@@ -388,8 +425,9 @@ function NowSection() {
         {...reveal}
         className="font-serif font-normal text-[clamp(30px,3.9vw,48px)] leading-[1.24] max-w-[900px] tracking-[-0.01em]"
       >
-        A computer science undergrad turning theory into practical AI —{" "}
-        <span className="text-accent">chasing the parts of the field still being figured out.</span>
+        <span className="text-accent">Founding</span> Engineer at JouleWorx,{" "}
+        <span className="italic text-[oklch(0.46_0.012_55)]">turning theory into practical AI</span> —{" "}
+        <span className="italic text-accent">chasing the parts of the field still being figured out.</span>
       </motion.p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-11">
@@ -432,7 +470,7 @@ function WorkSection() {
         index="02"
         title="SELECTED WORK"
         right={
-          <a href="https://github.com/beastboyjay" className="font-mono text-xs hover:text-accent transition-colors">
+          <a href="https://github.com/beastboyjay" target="_blank" rel="noopener noreferrer" className="font-mono text-xs hover:text-accent transition-colors">
             VIEW ALL ↗
           </a>
         }
@@ -496,7 +534,18 @@ function ExperienceSection() {
               <div className="font-mono text-xs text-[oklch(0.50_0.015_55)]">{e.dates}</div>
             </div>
             <div>
-              <h3 className="text-[22px] font-bold mb-1">{e.company}</h3>
+              {e.companyUrl ? (
+                <a
+                  href={e.companyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[22px] font-bold mb-1 hover:text-accent transition-colors inline-block"
+                >
+                  {e.company}
+                </a>
+              ) : (
+                <h3 className="text-[22px] font-bold mb-1">{e.company}</h3>
+              )}
               <div className="text-[15px] text-accent mb-4">{e.role}</div>
               <ul className="flex flex-col gap-2.5">
                 {e.points.map((pt) => (
@@ -519,36 +568,21 @@ function WritingSection() {
     <section id="writing" className="bg-[oklch(0.928_0.012_78)] border-y border-[oklch(0.86_0.012_72)] mt-8">
       <div className="max-w-[1120px] mx-auto px-8 py-[72px]">
         <SectionLabel index="04" title="WRITING" />
-        <div className="grid grid-cols-1 md:grid-cols-[1.3fr_0.7fr] gap-10 items-center">
-          <motion.div {...reveal}>
-            <h2 className="font-serif font-normal text-[clamp(32px,4.2vw,52px)] leading-[1.05] tracking-[-0.01em]">
-              I write about AI, ML &amp; <span className="text-accent">building things.</span>
-            </h2>
-            <p className="mt-5 max-w-[520px] text-[17px] leading-[1.55] text-[oklch(0.44_0.012_55)]">
-              Notes from the workbench — model experiments, RAG pipelines, and lessons from turning papers into
-              production code.
-            </p>
-            <a
-              href="https://blogs.jaysinha.dev"
-              className="inline-flex items-center gap-2 mt-[26px] px-[22px] py-[13px] rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:bg-[oklch(0.28_0.006_55)] transition-colors"
-            >
-              Read the blog →
-            </a>
-          </motion.div>
-          <motion.div
-            {...reveal}
-            className="aspect-square rounded-[18px] border border-[oklch(0.82_0.012_72)] bg-[oklch(0.985_0.004_85)] grid place-items-center relative overflow-hidden"
+        <motion.div {...reveal}>
+          <h2 className="font-serif font-normal text-[clamp(32px,4.2vw,52px)] leading-[1.05] tracking-[-0.01em]">
+            I write about AI, ML &amp; <span className="text-accent">building things.</span>
+          </h2>
+          <p className="mt-5 max-w-[520px] text-[17px] leading-[1.55] text-[oklch(0.44_0.012_55)]">
+            Notes from the workbench — model experiments, RAG pipelines, and lessons from turning papers into
+            production code.
+          </p>
+          <a
+            href="https://blogs.jaysinha.dev"
+            className="inline-flex items-center gap-2 mt-[26px] px-[22px] py-[13px] rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:bg-[oklch(0.28_0.006_55)] transition-colors"
           >
-            <span className="font-mono text-[13px] text-[oklch(0.50_0.02_50)]">~/blog $ ls</span>
-            <span className="absolute bottom-[22px] left-[22px] right-[22px] font-mono text-[11px] leading-[1.9] text-[oklch(0.60_0.015_55)]">
-              rag-from-scratch.md
-              <br />
-              attention-notes.md
-              <br />
-              shipping-ml.md<span className="text-accent">_</span>
-            </span>
-          </motion.div>
-        </div>
+            Read the blog →
+          </a>
+        </motion.div>
       </div>
     </section>
   );
@@ -558,27 +592,66 @@ function SkillsSection() {
   return (
     <section id="skills" className="max-w-[1120px] mx-auto px-8 pt-20 pb-10">
       <SectionLabel index="05" title="SKILLS" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        {skills.map((g) => (
-          <motion.div
-            key={g.group}
-            {...reveal}
-            className="p-[26px] rounded-2xl border border-border bg-[oklch(0.99_0.004_85)]"
-          >
-            <h3 className="font-mono text-[11px] text-[oklch(0.50_0.02_50)] uppercase tracking-[0.08em] mb-4">
-              {g.group}
-            </h3>
-            <div className="flex flex-wrap gap-[9px]">
-              {g.items.map((item) => (
-                <span
-                  key={item}
-                  className="px-3.5 py-2 border border-[oklch(0.84_0.012_72)] bg-[oklch(0.96_0.006_80)] rounded-[10px] text-sm font-medium text-[oklch(0.30_0.01_55)]"
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
-          </motion.div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch lg:auto-rows-[minmax(180px,auto)]">
+        {skills.map((g, idx) => (
+          <Fragment key={g.group}>
+            <motion.div
+              {...reveal}
+              transition={{ ...reveal.transition, delay: staggerDelay(idx === 0 ? 0 : idx + 1) }}
+              className={cn(
+                "p-[26px] rounded-2xl border border-border bg-[oklch(0.99_0.004_85)]",
+                bentoSpan[g.size],
+                g.placement
+              )}
+            >
+              <h3 className="font-mono text-[11px] text-[oklch(0.50_0.02_50)] uppercase tracking-[0.08em] mb-4">
+                {g.group}
+              </h3>
+              <div className="flex flex-wrap gap-[9px]">
+                {g.items.map((item) => (
+                  <span
+                    key={item}
+                    className="px-3.5 py-2 rounded-[10px] border border-[oklch(0.84_0.012_72)] bg-[oklch(0.96_0.006_80)] text-sm font-medium text-[oklch(0.30_0.01_55)]"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+
+            {idx === 0 && (
+              <motion.div
+                {...reveal}
+                transition={{ ...reveal.transition, delay: staggerDelay(1) }}
+                className="rounded-2xl border border-[oklch(0.32_0.01_55)] bg-[oklch(0.185_0.008_55)] overflow-hidden flex flex-col shadow-[0_1px_2px_oklch(0.3_0.02_50/.1),0_24px_54px_oklch(0.3_0.02_50/.16)] sm:col-span-2 lg:col-span-2 lg:row-span-2 lg:col-start-1 lg:row-start-1"
+              >
+                <div className="flex items-center gap-[7px] px-[15px] py-[13px] border-b border-[oklch(0.28_0.01_55)]">
+                  <span className="w-[11px] h-[11px] rounded-full bg-[oklch(0.62_0.16_25)]" />
+                  <span className="w-[11px] h-[11px] rounded-full bg-[oklch(0.75_0.13_75)]" />
+                  <span className="w-[11px] h-[11px] rounded-full bg-[oklch(0.68_0.14_145)]" />
+                  <span className="ml-2 font-mono text-[11px] text-[oklch(0.58_0.012_60)]">jay@sinha: ~</span>
+                </div>
+                <div className="px-[18px] py-5 font-mono text-[12.5px] leading-[2.05] text-[oklch(0.84_0.012_80)] flex flex-col justify-center flex-1">
+                  <div>
+                    <span className="text-[oklch(0.72_0.15_40)]">$</span> ./stack --summary
+                  </div>
+                  {stats.map((s) => (
+                    <div key={s.label} className="text-[oklch(0.60_0.012_60)] mb-1.5">
+                      <span className="text-[oklch(0.84_0.012_80)]">
+                        {s.pad && s.target < 10 ? "0" + s.target : s.target}
+                        {s.suffix}
+                      </span>{" "}
+                      {s.label}
+                    </div>
+                  ))}
+                  <div>
+                    <span className="text-[oklch(0.72_0.15_40)]">$</span>{" "}
+                    <span className="text-[oklch(0.72_0.15_40)] animate-blink-cursor">▋</span>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </Fragment>
         ))}
       </div>
     </section>
