@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Terminal, type TerminalCommands } from "@/components/Terminal";
 
 const nav = [
   { label: "About", href: "#about" },
@@ -159,6 +160,56 @@ const skills: { group: string; items: string[]; size: SkillSize; placement: stri
   { group: "Tools", items: ["Redis", "Kafka", "Git"], size: "sm", placement: "lg:col-start-2 lg:row-start-4" },
   { group: "Agentic AI & LLM Ops", items: ["MCP", "Multi-Agent Orchestration", "Local LLM Workflows", "Efficient Fine-tuning (LoRA/QLoRA)"], size: "banner", placement: "lg:col-start-3 lg:row-start-4" },
 ];
+
+const BIRTHDATE = new Date(2004, 6, 31);
+
+function computeAge(): number {
+  const now = new Date();
+  let age = now.getFullYear() - BIRTHDATE.getFullYear();
+  const hadBirthday =
+    now.getMonth() > BIRTHDATE.getMonth() ||
+    (now.getMonth() === BIRTHDATE.getMonth() && now.getDate() >= BIRTHDATE.getDate());
+  if (!hadBirthday) age--;
+  return age;
+}
+
+const commandMeta: { name: string; hint: string }[] = [
+  { name: "whoami", hint: "who I am" },
+  { name: "age", hint: "how old I am" },
+  { name: "about", hint: "short bio" },
+  { name: "status", hint: "what I'm up to" },
+  { name: "help", hint: "list commands" },
+  { name: "skills", hint: "tech I use" },
+  { name: "projects", hint: "things I've built" },
+  { name: "experience", hint: "work history" },
+  { name: "contact", hint: "email" },
+  { name: "socials", hint: "social links" },
+  { name: "stack", hint: "full tech list" },
+  { name: "sudo", hint: "try me" },
+  { name: "clear", hint: "clear the screen" },
+  { name: "date", hint: "current date/time" },
+  { name: "banner", hint: "welcome message" },
+];
+
+const terminalCommands: TerminalCommands = {
+  whoami: () => ["AI Engineer · FullStack Developer"],
+  age: () => [`${computeAge()} years old`],
+  about: () => [
+    "Building intelligent systems with deep learning, computer vision, NLP, and generative AI —",
+    "turning research into things that run in production.",
+  ],
+  status: () => ["shipping intelligent systems"],
+  help: () => ["Available commands:", ...commandMeta.map((c) => `${c.name.padEnd(12)}— ${c.hint}`)],
+  skills: () => skills.flatMap((g) => [`${g.group}:`, `  ${g.items.join(", ")}`]),
+  projects: () => projects.flatMap((p) => [`${p.name} (${p.year})`, `  ${p.desc}`]),
+  experience: () => experience.map((e) => `${e.role} @ ${e.company} (${e.dates})`),
+  contact: () => ["jay31sinha@gmail.com"],
+  socials: () => ["github.com/beastboyjay", "x.com/BEAST_BOY_JAY", "medium.com/@beastboyjay", "linkedin.com/in/beastboyjay"],
+  stack: () => [tech.join(" · ")],
+  sudo: () => ["Permission denied: nice try.", "This incident will be reported to /dev/null."],
+  date: () => [new Date().toLocaleString()],
+  banner: () => ["Welcome to jay@sinha — type 'help' to see available commands."],
+};
 
 const bentoSpan: Record<SkillSize, string> = {
   banner: "sm:col-span-2 lg:col-span-2",
@@ -357,24 +408,21 @@ function HeroSection() {
               <span className="w-[11px] h-[11px] rounded-full bg-[oklch(0.68_0.14_145)]" />
               <span className="ml-2 font-mono text-[11px] text-[oklch(0.58_0.012_60)]">jay@sinha: ~</span>
             </div>
-            <div className="px-[18px] py-5 font-mono text-[12.5px] leading-[2.05] text-[oklch(0.84_0.012_80)] flex flex-col justify-center flex-1">
-              <div>
-                <span className="text-[oklch(0.72_0.15_40)]">$</span> whoami
-              </div>
-              <div className="text-[oklch(0.60_0.012_60)] mb-1.5">AI Engineer · FullStack Developer</div>
-              <div>
-                <span className="text-[oklch(0.72_0.15_40)]">$</span> cat stack.txt
-              </div>
-              <div className="text-[oklch(0.60_0.012_60)] mb-1.5">PyTorch · RAG · CV · NLP · GenAI</div>
-              <div>
-                <span className="text-[oklch(0.72_0.15_40)]">$</span> status --now
-              </div>
-              <div className="text-[oklch(0.60_0.012_60)] mb-1.5">shipping intelligent systems</div>
-              <div>
-                <span className="text-[oklch(0.72_0.15_40)]">$</span>{" "}
-                <span className="text-[oklch(0.72_0.15_40)] animate-blink-cursor">▋</span>
-              </div>
-            </div>
+            <Terminal
+              commands={terminalCommands}
+              boot={
+                <>
+                  <div>
+                    <span className="text-[oklch(0.72_0.15_40)]">$</span> whoami
+                  </div>
+                  <div className="text-[oklch(0.60_0.012_60)] mb-1.5">AI Engineer · FullStack Developer</div>
+                  <div>
+                    <span className="text-[oklch(0.72_0.15_40)]">$</span> status
+                  </div>
+                  <div className="text-[oklch(0.60_0.012_60)] mb-1.5">shipping intelligent systems</div>
+                </>
+              }
+            />
           </div>
         </motion.div>
       </div>
@@ -623,7 +671,7 @@ function SkillsSection() {
               <motion.div
                 {...reveal}
                 transition={{ ...reveal.transition, delay: staggerDelay(1) }}
-                className="rounded-2xl border border-[oklch(0.32_0.01_55)] bg-[oklch(0.185_0.008_55)] overflow-hidden flex flex-col shadow-[0_1px_2px_oklch(0.3_0.02_50/.1),0_24px_54px_oklch(0.3_0.02_50/.16)] sm:col-span-2 lg:col-span-2 lg:row-span-2 lg:col-start-1 lg:row-start-1"
+                className="rounded-2xl border border-[oklch(0.32_0.01_55)] bg-[oklch(0.185_0.008_55)] overflow-hidden flex flex-col shadow-[0_1px_2px_oklch(0.3_0.02_50/.1),0_24px_54px_oklch(0.3_0.02_50/.16)] sm:col-span-2 lg:col-span-2 lg:row-span-2 lg:col-start-1 lg:row-start-1 lg:max-h-[466px]"
               >
                 <div className="flex items-center gap-[7px] px-[15px] py-[13px] border-b border-[oklch(0.28_0.01_55)]">
                   <span className="w-[11px] h-[11px] rounded-full bg-[oklch(0.62_0.16_25)]" />
@@ -631,24 +679,25 @@ function SkillsSection() {
                   <span className="w-[11px] h-[11px] rounded-full bg-[oklch(0.68_0.14_145)]" />
                   <span className="ml-2 font-mono text-[11px] text-[oklch(0.58_0.012_60)]">jay@sinha: ~</span>
                 </div>
-                <div className="px-[18px] py-5 font-mono text-[12.5px] leading-[2.05] text-[oklch(0.84_0.012_80)] flex flex-col justify-center flex-1">
-                  <div>
-                    <span className="text-[oklch(0.72_0.15_40)]">$</span> ./stack --summary
-                  </div>
-                  {stats.map((s) => (
-                    <div key={s.label} className="text-[oklch(0.60_0.012_60)] mb-1.5">
-                      <span className="text-[oklch(0.84_0.012_80)]">
-                        {s.pad && s.target < 10 ? "0" + s.target : s.target}
-                        {s.suffix}
-                      </span>{" "}
-                      {s.label}
-                    </div>
-                  ))}
-                  <div>
-                    <span className="text-[oklch(0.72_0.15_40)]">$</span>{" "}
-                    <span className="text-[oklch(0.72_0.15_40)] animate-blink-cursor">▋</span>
-                  </div>
-                </div>
+                <Terminal
+                  commands={terminalCommands}
+                  boot={
+                    <>
+                      <div>
+                        <span className="text-[oklch(0.72_0.15_40)]">$</span> ./stack --summary
+                      </div>
+                      {stats.map((s) => (
+                        <div key={s.label} className="text-[oklch(0.60_0.012_60)] mb-1.5">
+                          <span className="text-[oklch(0.84_0.012_80)]">
+                            {s.pad && s.target < 10 ? "0" + s.target : s.target}
+                            {s.suffix}
+                          </span>{" "}
+                          {s.label}
+                        </div>
+                      ))}
+                    </>
+                  }
+                />
               </motion.div>
             )}
           </Fragment>
