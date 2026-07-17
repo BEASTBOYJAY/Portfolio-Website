@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Terminal, type TerminalCommands } from "@/components/Terminal";
@@ -85,29 +86,29 @@ const projects = [
   {
     num: "01",
     year: "2024",
-    name: "Virtual Hand Painting",
-    shot: "[ gesture demo ]",
-    link: "https://github.com/BEASTBOYJAY/Virtual_hand_painting",
-    desc: "Draw digitally with hand gestures — real-time hand tracking, dynamic brush sizing, and multiple colors, built on MediaPipe and OpenCV.",
-    tags: ["Python", "OpenCV", "MediaPipe"],
-  },
-  {
-    num: "02",
-    year: "2024",
     name: "Local RAG System",
-    shot: "[ retrieval flow ]",
+    image: "/local_rag.png",
     link: "https://github.com/BEASTBOYJAY/Local_RAG",
     desc: "A fully local RAG pipeline that processes PDFs, builds embeddings, and returns context-aware answers via semantic search.",
     tags: ["Python", "Groq", "LLM"],
   },
   {
-    num: "03",
+    num: "02",
     year: "2024",
     name: "GPT Language Model",
-    shot: "[ attention map ]",
+    image: "/gpt_language_model.png",
     link: "https://github.com/BEASTBOYJAY/GPT-dev",
     desc: "A GPT-style language model in PyTorch — multi-head attention, character tokenization, and GPU-accelerated training from scratch.",
     tags: ["Python", "PyTorch", "LLM"],
+  },
+  {
+    num: "03",
+    year: "2026",
+    name: "Car Racing Reinforcement Learning",
+    image: "/car_rl.png",
+    link: "https://github.com/BEASTBOYJAY/Car_RL",
+    desc: "A self-driving racer trained with PPO — lidar-based perception, custom physics, and reward shaping, racing head-to-head against a human player.",
+    tags: ["Python", "PPO", "Reinforcement Learning"],
   },
 ];
 
@@ -527,7 +528,7 @@ function WorkSection() {
         {...reveal}
         className="font-serif font-normal text-[clamp(34px,4.8vw,58px)] leading-[1.04] max-w-[780px] tracking-[-0.01em] mb-11"
       >
-        Systems I built to <span className="text-accent">see, read, and generate.</span>
+        Systems I built to <span className="text-accent">read, generate, and simulate.</span>
       </motion.h2>
 
       <div className="flex flex-col gap-[18px]">
@@ -540,8 +541,14 @@ function WorkSection() {
             {...reveal}
             className="grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr] gap-9 p-[26px] rounded-[18px] border border-border bg-[oklch(0.99_0.004_85)] text-inherit shadow-[0_1px_2px_oklch(0.3_0.02_50/.04)] transition-all duration-[250ms] hover:border-accent hover:-translate-y-1 hover:shadow-[0_12px_34px_oklch(0.3_0.02_50/.1)]"
           >
-            <div className="aspect-[16/10] rounded-xl bg-[repeating-linear-gradient(135deg,oklch(0.95_0.006_80)_0_12px,oklch(0.92_0.008_78)_12px_24px)] grid place-items-center border border-[oklch(0.86_0.012_72)]">
-              <span className="font-mono text-xs text-[oklch(0.55_0.02_50)]">{p.shot}</span>
+            <div className="relative aspect-[16/10] rounded-xl bg-[oklch(0.97_0.004_85)] border border-[oklch(0.86_0.012_72)] overflow-hidden">
+              <Image
+                src={p.image}
+                alt={`${p.name} diagram`}
+                fill
+                className="object-contain p-4"
+                sizes="(min-width: 768px) 45vw, 90vw"
+              />
             </div>
             <div className="flex flex-col justify-center">
               <div className="font-mono text-xs text-[oklch(0.50_0.015_55)] mb-3">
