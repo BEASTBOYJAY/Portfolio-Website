@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Instrument_Serif, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { VisualEditsMessenger } from "orchids-visual-edits";
+import { siteConfig } from "@/lib/site-config";
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -26,8 +27,58 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jay Sinha | AI Engineer & ML Developer",
-  description: "AI Engineer specializing in Deep Learning, Computer Vision, NLP, and Generative AI. Building cutting-edge AI solutions.",
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  keywords: [...siteConfig.keywords],
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
+  alternates: {
+    canonical: siteConfig.url,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: siteConfig.title,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: siteConfig.socials.xHandle,
+    creator: siteConfig.socials.xHandle,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: ["/opengraph-image"],
+  },
+  verification: {
+    // Paste the Google Search Console HTML-tag verification code here after
+    // adding jaysinha.dev as a property (see post-implementation steps).
+    google: "",
+  },
 };
 
 export default function RootLayout({
@@ -47,14 +98,21 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              "name": "Jay Sinha",
-              "alternateName": "beastboyjay",
-              "url": "https://jaysinha.dev",
+              "name": siteConfig.name,
+              "alternateName": siteConfig.handle,
+              "url": siteConfig.url,
+              "jobTitle": siteConfig.jobTitle,
+              "worksFor": {
+                "@type": "Organization",
+                "name": siteConfig.employer.name,
+                "url": siteConfig.employer.url,
+              },
               "sameAs": [
-                "https://github.com/beastboyjay",
-                "https://x.com/BEAST_BOY_JAY",
-                "https://medium.com/@beastboyjay"
-              ]
+                siteConfig.socials.github,
+                siteConfig.socials.x,
+                siteConfig.socials.linkedin,
+                siteConfig.socials.medium,
+              ],
             })
           }}
         />
