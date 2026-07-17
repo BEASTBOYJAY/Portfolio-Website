@@ -74,11 +74,6 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: ["/opengraph-image"],
   },
-  verification: {
-    // Paste the Google Search Console HTML-tag verification code here after
-    // adding jaysinha.dev as a property (see post-implementation steps).
-    google: "",
-  },
 };
 
 export default function RootLayout({
