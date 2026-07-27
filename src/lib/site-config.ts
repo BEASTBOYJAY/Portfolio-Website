@@ -6,7 +6,7 @@ export const siteConfig = {
   blogUrl: "https://blogs.jaysinha.dev",
   title: "Jay Sinha | AI Engineer & ML Developer",
   description:
-    "AI Engineer specializing in Deep Learning, Computer Vision, NLP, and Generative AI. Building cutting-edge AI solutions.",
+    "AI Engineer specializing in Deep Learning, Computer Vision, NLP, and Generative AI. I build AI agents and ship them to production.",
   jobTitle: "AI Engineer",
   employer: {
     name: "Jouleworx",

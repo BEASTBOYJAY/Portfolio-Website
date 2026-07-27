@@ -50,8 +50,8 @@ const log = [
 const logDoubled = [...log, ...log];
 
 const stats = [
-  { target: 20, suffix: "+", pad: false, label: "Skills fulfilled via vibe coding" },
-  { target: 3, suffix: "", pad: true, label: "AI internships shipped" },
+  { target: 20, suffix: "+", pad: false, label: "Skills" },
+  { target: 3, suffix: "", pad: true, label: "AI internships completed" },
   { target: 15, suffix: "+", pad: false, label: "Projects built" },
 ];
 
@@ -60,13 +60,13 @@ const nowCards = [
     icon: "⚙",
     tag: "Working on",
     title: "Building app MVPs & AI agents",
-    body: "Kin, a one-button check-in app for parents and guardians with no location tracking, plus Jotgen, an agent that writes well-researched blogs with near-zero hallucination.",
+    body: "Kin is a one-button check-in app for parents and guardians. No location tracking, just a button. Then there's Jotgen, an agent that writes well-researched blogs.",
   },
   {
     icon: "◇",
     tag: "Exploring",
     title: "Getting comfortable with not knowing",
-    body: "Trading finished answers for better questions — every project is a rough draft, and the only failure is standing still.",
+    body: "I'd rather trade finished answers for better questions. Every project's a rough draft, and I keep revising as I go.",
   },
   {
     icon: "☕",
@@ -78,7 +78,7 @@ const nowCards = [
     icon: "♫",
     tag: "Now playing",
     title: "Lo-fi & synthwave",
-    body: "Low-vocal, high-focus — the soundtrack for deep-work mode and long GPU sessions.",
+    body: "Low-vocal, high-focus, built for deep-work mode and long GPU sessions.",
   },
 ];
 
@@ -89,7 +89,7 @@ const projects = [
     name: "Local RAG System",
     image: "/local_rag.png",
     link: "https://github.com/BEASTBOYJAY/Local_RAG",
-    desc: "A fully local RAG pipeline that processes PDFs, builds embeddings, and returns context-aware answers via semantic search.",
+    desc: "A RAG pipeline that processes PDFs and builds embeddings locally, then hands off to Groq for fast inference.",
     tags: ["Python", "Groq", "LLM"],
   },
   {
@@ -98,7 +98,7 @@ const projects = [
     name: "GPT Language Model",
     image: "/gpt_language_model.png",
     link: "https://github.com/BEASTBOYJAY/GPT-dev",
-    desc: "A GPT-style language model in PyTorch — multi-head attention, character tokenization, and GPU-accelerated training from scratch.",
+    desc: "A GPT-style language model in PyTorch, built from scratch: multi-head attention, character tokenization, GPU-accelerated training.",
     tags: ["Python", "PyTorch", "LLM"],
   },
   {
@@ -107,26 +107,34 @@ const projects = [
     name: "Car Racing Reinforcement Learning",
     image: "/car_rl.png",
     link: "https://github.com/BEASTBOYJAY/Car_RL",
-    desc: "A self-driving racer trained with PPO — lidar-based perception, custom physics, and reward shaping, racing head-to-head against a human player.",
+    desc: "A self-driving racer trained with PPO. It races head-to-head against a human player, using lidar-based perception, custom physics, and reward shaping.",
     tags: ["Python", "PPO", "Reinforcement Learning"],
   },
 ];
 
 const experience = [
   {
-    dates: "JAN 2026 — JUL 2026",
+    dates: "JUL 2026 - PRESENT",
+    company: "Jouleworx",
+    companyUrl: "https://jouleworx.com/",
+    role: "Founding Engineer",
+    points: [
+      "Building the company's first product MVP, gearing up for public launch.",
+    ],
+  },
+  {
+    dates: "JAN 2026 - JUL 2026",
     company: "Jouleworx",
     companyUrl: "https://jouleworx.com/",
     role: "Tech Generalist Intern",
     points: [
-      "Architected and deployed autonomous AI agents, integrating LLMs into production on high-performance infrastructure.",
-      "Built and maintained scalable Next.js web apps, bridging complex backends with responsive frontends.",
-      "Designed secure, cost-optimized cloud environments and CI/CD pipelines for containerized GCP deployments.",
-      "Currently building the company's first product MVP, gearing up for public launch.",
+      "Built and deployed AI agents backed by LLMs, running in production.",
+      "Built and maintained Next.js web apps, covering frontend and backend.",
+      "Set up CI/CD pipelines and GCP infrastructure for containerized deployments.",
     ],
   },
   {
-    dates: "MAY 2025 — OCT 2025",
+    dates: "MAY 2025 - OCT 2025",
     company: "Magure Inc.",
     companyUrl: "https://www.magureinc.com/",
     role: "AI Research Intern",
@@ -137,12 +145,12 @@ const experience = [
     ],
   },
   {
-    dates: "JUL 2024 — DEC 2024",
+    dates: "JUL 2024 - DEC 2024",
     company: "Wyr.ai",
     role: "AI Engineer Intern",
     points: [
       "Trained deep learning models for real-time object detection.",
-      "Automated data workflows and built scalable APIs.",
+      "Automated data workflows and built APIs.",
       "Researched autoencoders for feature extraction.",
     ],
   },
@@ -196,11 +204,11 @@ const terminalCommands: TerminalCommands = {
   whoami: () => ["AI Engineer · FullStack Developer"],
   age: () => [`${computeAge()} years old`],
   about: () => [
-    "Building intelligent systems with deep learning, computer vision, NLP, and generative AI —",
-    "turning research into things that run in production.",
+    "Deep learning, computer vision, NLP, generative AI.",
+    "I build with it, then ship it to production.",
   ],
-  status: () => ["shipping intelligent systems"],
-  help: () => ["Available commands:", ...commandMeta.map((c) => `${c.name.padEnd(12)}— ${c.hint}`)],
+  status: () => ["shipping AI agents to prod"],
+  help: () => ["Available commands:", ...commandMeta.map((c) => `${c.name.padEnd(12)}- ${c.hint}`)],
   skills: () => skills.flatMap((g) => [`${g.group}:`, `  ${g.items.join(", ")}`]),
   projects: () => projects.flatMap((p) => [`${p.name} (${p.year})`, `  ${p.desc}`]),
   experience: () => experience.map((e) => `${e.role} @ ${e.company} (${e.dates})`),
@@ -209,7 +217,7 @@ const terminalCommands: TerminalCommands = {
   stack: () => [tech.join(" · ")],
   sudo: () => ["Permission denied: nice try.", "This incident will be reported to /dev/null."],
   date: () => [new Date().toLocaleString()],
-  banner: () => ["Welcome to jay@sinha — type 'help' to see available commands."],
+  banner: () => ["Welcome to jay@sinha. Type 'help' to see available commands."],
 };
 
 const bentoSpan: Record<SkillSize, string> = {
@@ -334,7 +342,7 @@ function HeroSection() {
         className="inline-flex items-center gap-2.5 px-[14px] py-[7px] font-mono text-xs tracking-[0.04em] uppercase text-[oklch(0.50_0.02_50)]"
       >
         <span className="w-2 h-2 rounded-full bg-accent animate-pulse-dot" />
-        Currently Founding Engineer @ Jouleworx — open to interesting problems
+        Currently Founding Engineer @ Jouleworx, and open to interesting problems.
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-[1.35fr_0.65fr] gap-12 items-center mt-7">
@@ -372,8 +380,8 @@ function HeroSection() {
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.35 }}
             className="mt-[26px] max-w-[520px] text-lg leading-[1.55] text-[oklch(0.44_0.012_55)]"
           >
-            Building intelligent systems with deep learning, computer vision, NLP, and generative AI — turning
-            research into things that run in production.
+            Deep learning, computer vision, NLP, generative AI. I build with it, then ship it to
+            production.
           </motion.p>
 
           <motion.div
@@ -420,7 +428,7 @@ function HeroSection() {
                   <div>
                     <span className="text-[oklch(0.72_0.15_40)]">$</span> status
                   </div>
-                  <div className="text-[oklch(0.60_0.012_60)] mb-1.5">shipping intelligent systems</div>
+                  <div className="text-[oklch(0.60_0.012_60)] mb-1.5">shipping AI agents to prod</div>
                 </>
               }
             />
@@ -474,9 +482,9 @@ function NowSection() {
         {...reveal}
         className="font-serif font-normal text-[clamp(30px,3.9vw,48px)] leading-[1.24] max-w-[900px] tracking-[-0.01em]"
       >
-        <span className="text-accent">Founding</span> Engineer at JouleWorx,{" "}
-        <span className="italic text-[oklch(0.46_0.012_55)]">turning theory into practical AI</span> —{" "}
-        <span className="italic text-accent">chasing the parts of the field still being figured out.</span>
+        <span className="text-accent">Founding</span> Engineer at Jouleworx,{" "}
+        <span className="italic text-[oklch(0.46_0.012_55)]">turning theory into practical AI</span>.{" "}
+        <span className="italic text-accent">Chasing the parts of the field nobody's figured out yet.</span>
       </motion.p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-11">
@@ -579,9 +587,9 @@ function ExperienceSection() {
     <section id="experience" className="max-w-[1120px] mx-auto px-8 pt-[72px] pb-10">
       <SectionLabel index="03" title="EXPERIENCE" />
       <div className="flex flex-col">
-        {experience.map((e) => (
+        {experience.map((e, i) => (
           <motion.div
-            key={e.company}
+            key={`${e.company}-${i}`}
             {...reveal}
             className="grid grid-cols-1 md:grid-cols-[0.5fr_1.5fr] gap-9 py-7 border-t border-[oklch(0.84_0.012_72)]"
           >
@@ -628,7 +636,7 @@ function WritingSection() {
             I write about AI, ML &amp; <span className="text-accent">building things.</span>
           </h2>
           <p className="mt-5 max-w-[520px] text-[17px] leading-[1.55] text-[oklch(0.44_0.012_55)]">
-            Notes from the workbench — model experiments, RAG pipelines, and lessons from turning papers into
+            Notes from the workbench. Model experiments, RAG pipelines, and lessons from turning papers into
             production code.
           </p>
           <a
@@ -725,8 +733,8 @@ function ContactSection() {
         Got an <span className="text-accent">interesting problem?</span> Let&apos;s talk.
       </motion.h2>
       <motion.p {...reveal} className="mt-[22px] max-w-[540px] text-lg leading-[1.55] text-[oklch(0.44_0.012_55)]">
-        I&apos;m always open to conversations about AI, ML, and generative tech — especially the kind that don&apos;t
-        have an obvious answer yet. I read every message.
+        I&apos;m always open to conversations about AI, ML, and generative tech, especially the kind without
+        an obvious answer yet. I read every message.
       </motion.p>
       <motion.div {...reveal} className="flex flex-wrap gap-3.5 mt-[34px]">
         <a
