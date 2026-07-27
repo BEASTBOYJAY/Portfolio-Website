@@ -34,3 +34,5 @@ const nextConfig: NextConfig = {
 } as NextConfig;
 
 export default nextConfig;
+
+import('@opennextjs/cloudflare').then(m => m.initOpenNextCloudflareForDev());
