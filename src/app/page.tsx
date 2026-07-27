@@ -765,7 +765,7 @@ function Footer() {
     <footer className="max-w-[1120px] mx-auto px-8 pt-12 pb-16 border-t border-[oklch(0.84_0.012_72)] flex flex-wrap items-center justify-between gap-4">
       <div className="text-sm text-[oklch(0.48_0.012_55)]">© 2026 Jay Sinha</div>
       <div className="font-mono text-xs text-[oklch(0.55_0.02_50)]">
-        Built in Raipur, Chhattisgarh · AI, ML &amp; code
+        Built in India · AI, ML &amp; code
       </div>
     </footer>
   );
