@@ -162,3 +162,13 @@ html {
 .nextjs-portal {
   display: none !important;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-slow,
+  .animate-marquee-reverse,
+  .animate-pulse-dot,
+  .animate-blink-cursor {
+    animation: none;
+  }
+}

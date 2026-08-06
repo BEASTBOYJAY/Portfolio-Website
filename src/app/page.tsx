@@ -1,10 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { Fragment, useEffect, useRef, useState } from "react";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Terminal, type TerminalCommands } from "@/components/Terminal";
+import { IntroAnimation } from "@/components/IntroAnimation";
 
 const nav = [
   { label: "About", href: "#about" },
@@ -279,7 +281,7 @@ function StatCounter({ target, suffix, pad }: { target: number; suffix: string; 
   }, [target, suffix, pad]);
 
   return (
-    <div ref={ref} className="font-serif font-normal text-[clamp(44px,5.4vw,68px)] leading-none text-accent">
+    <div ref={ref} className="font-serif font-normal text-[clamp(30px,9vw,44px)] sm:text-[clamp(44px,5.4vw,68px)] leading-none text-accent">
       {display}
     </div>
   );
@@ -287,6 +289,7 @@ function StatCounter({ target, suffix, pad }: { target: number; suffix: string; 
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -297,44 +300,88 @@ function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 flex items-center justify-between px-8 py-4 backdrop-blur-[14px] border-b border-border transition-colors duration-300 ${scrolled ? "bg-background/60" : "bg-background/82"
+      className={`sticky top-0 z-50 backdrop-blur-[14px] border-b border-border transition-colors duration-300 ${scrolled ? "bg-background/60" : "bg-background/82"
         }`}
     >
-      <a href="#top" className="flex items-center gap-3 text-foreground">
-        <span className="grid place-items-center w-[38px] h-[38px] rounded-[10px] bg-primary text-primary-foreground font-mono font-medium text-[15px]">
-          JS
-        </span>
-        <span className="flex flex-col leading-[1.1]">
-          <span className="font-bold text-[15px]">Jay Sinha</span>
-          <span className="font-mono text-[11px] text-[oklch(0.52_0.02_50)]">AI Engineer · FullStack Developer</span>
-        </span>
-      </a>
-      <div className="flex items-center gap-7">
-        <div className="hidden md:flex gap-[26px]">
-          {nav.map((n) => (
-            <a
-              key={n.href}
-              href={n.href}
-              className="text-[14px] font-medium text-[oklch(0.38_0.012_55)] hover:text-accent transition-colors"
-            >
-              {n.label}
-            </a>
-          ))}
-        </div>
-        <a
-          href="#contact"
-          className="inline-flex items-center gap-1.5 px-4 py-[9px] rounded-full bg-primary text-primary-foreground text-[13px] font-semibold hover:bg-[oklch(0.28_0.006_55)] transition-colors"
-        >
-          Get in touch →
+      <div className="flex items-center justify-between px-5 py-3.5 md:px-8 md:py-4">
+        <a href="#top" className="flex items-center gap-3 text-foreground">
+          <span className="grid place-items-center w-[38px] h-[38px] rounded-[10px] bg-primary text-primary-foreground font-mono font-medium text-[15px]">
+            JS
+          </span>
+          <span className="flex flex-col leading-[1.1]">
+            <span id="navbar-brand-text" className="font-bold text-[15px]">Jay Sinha</span>
+            <span className="font-mono text-[11px] text-[oklch(0.52_0.02_50)]">AI Engineer · FullStack Developer</span>
+          </span>
         </a>
+        <div className="flex items-center gap-7">
+          <div className="hidden md:flex gap-[26px]">
+            {nav.map((n) => (
+              <a
+                key={n.href}
+                href={n.href}
+                className="text-[14px] font-medium text-[oklch(0.38_0.012_55)] hover:text-accent transition-colors"
+              >
+                {n.label}
+              </a>
+            ))}
+          </div>
+          <a
+            href="#contact"
+            className="hidden md:inline-flex items-center gap-1.5 px-4 py-[9px] rounded-full bg-primary text-primary-foreground text-[13px] font-semibold hover:bg-[oklch(0.28_0.006_55)] transition-colors"
+          >
+            Get in touch →
+          </a>
+          <button
+            type="button"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((o) => !o)}
+            className="grid place-items-center p-3 -mr-1.5 rounded-full text-foreground hover:text-accent transition-colors md:hidden"
+          >
+            {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
       </div>
+
+      <AnimatePresence initial={false}>
+        {menuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden overflow-hidden border-t border-border"
+          >
+            <div className="flex flex-col gap-1 px-5 pt-2">
+              {nav.map((n) => (
+                <a
+                  key={n.href}
+                  href={n.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="py-3.5 text-lg font-medium text-foreground border-b border-border last:border-b-0 hover:text-accent transition-colors"
+                >
+                  {n.label}
+                </a>
+              ))}
+            </div>
+            <a
+              href="#contact"
+              onClick={() => setMenuOpen(false)}
+              className="mx-5 mt-5 mb-6 inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-[oklch(0.28_0.006_55)] transition-colors"
+            >
+              Get in touch →
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
 
 function HeroSection() {
   return (
-    <header id="top" className="max-w-[1120px] mx-auto px-8 pt-[88px] pb-14">
+    <header id="top" className="max-w-[1120px] mx-auto px-8 pt-14 md:pt-[88px] pb-14">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -347,7 +394,7 @@ function HeroSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-[1.35fr_0.65fr] gap-12 items-center mt-7">
         <div>
-          <h1 className="font-serif font-normal text-[clamp(60px,10vw,142px)] leading-[0.9] tracking-[-0.02em]">
+          <h1 className="font-serif font-normal text-[clamp(42px,11vw,142px)] leading-[0.9] tracking-[-0.02em]">
             <motion.span
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -388,7 +435,7 @@ function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.45 }}
-            className="flex gap-3.5 mt-[30px]"
+            className="flex flex-wrap gap-3.5 mt-[30px]"
           >
             <a
               href="#work"
@@ -440,12 +487,12 @@ function HeroSection() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.55 }}
-        className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-14 border-t border-[oklch(0.82_0.012_72)] pt-8"
+        className="grid grid-cols-3 gap-3 sm:gap-6 mt-14 border-t border-[oklch(0.82_0.012_72)] pt-8"
       >
         {stats.map((s) => (
           <div key={s.label} className="flex flex-col items-center text-center">
             <StatCounter target={s.target} suffix={s.suffix} pad={s.pad} />
-            <div className="mt-2 text-sm text-[oklch(0.46_0.012_55)]">{s.label}</div>
+            <div className="mt-2 text-xs sm:text-sm text-[oklch(0.46_0.012_55)]">{s.label}</div>
           </div>
         ))}
       </motion.div>
@@ -472,7 +519,7 @@ function TechMarquee() {
 
 function NowSection() {
   return (
-    <section id="about" className="max-w-[1120px] mx-auto px-8 pt-[92px] pb-10">
+    <section id="about" className="max-w-[1120px] mx-auto px-8 pt-14 md:pt-[92px] pb-10">
       <SectionLabel
         index="01"
         title="NOW"
@@ -522,7 +569,7 @@ function NowSection() {
 
 function WorkSection() {
   return (
-    <section id="work" className="max-w-[1120px] mx-auto px-8 pt-[72px] pb-10">
+    <section id="work" className="max-w-[1120px] mx-auto px-8 pt-12 md:pt-[72px] pb-10">
       <SectionLabel
         index="02"
         title="SELECTED WORK"
@@ -562,7 +609,7 @@ function WorkSection() {
               <div className="font-mono text-xs text-[oklch(0.50_0.015_55)] mb-3">
                 {p.num} · {p.year}
               </div>
-              <h3 className="font-serif font-normal text-[34px] leading-[1.04] mb-3">{p.name}</h3>
+              <h3 className="font-serif font-normal text-[clamp(24px,4vw,34px)] leading-[1.04] mb-3">{p.name}</h3>
               <p className="text-[15px] leading-[1.55] text-[oklch(0.46_0.012_55)] mb-[18px]">{p.desc}</p>
               <div className="flex flex-wrap gap-2">
                 {p.tags.map((tag) => (
@@ -584,7 +631,7 @@ function WorkSection() {
 
 function ExperienceSection() {
   return (
-    <section id="experience" className="max-w-[1120px] mx-auto px-8 pt-[72px] pb-10">
+    <section id="experience" className="max-w-[1120px] mx-auto px-8 pt-12 md:pt-[72px] pb-10">
       <SectionLabel index="03" title="EXPERIENCE" />
       <div className="flex flex-col">
         {experience.map((e, i) => (
@@ -653,7 +700,7 @@ function WritingSection() {
 
 function SkillsSection() {
   return (
-    <section id="skills" className="max-w-[1120px] mx-auto px-8 pt-20 pb-10">
+    <section id="skills" className="max-w-[1120px] mx-auto px-8 pt-14 md:pt-20 pb-10">
       <SectionLabel index="05" title="SKILLS" />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch lg:auto-rows-[minmax(180px,auto)]">
         {skills.map((g, idx) => (
@@ -686,7 +733,7 @@ function SkillsSection() {
               <motion.div
                 {...reveal}
                 transition={{ ...reveal.transition, delay: staggerDelay(1) }}
-                className="rounded-2xl border border-[oklch(0.32_0.01_55)] bg-[oklch(0.185_0.008_55)] overflow-hidden flex flex-col shadow-[0_1px_2px_oklch(0.3_0.02_50/.1),0_24px_54px_oklch(0.3_0.02_50/.16)] sm:col-span-2 lg:col-span-2 lg:row-span-2 lg:col-start-1 lg:row-start-1 lg:max-h-[466px]"
+                className="rounded-2xl border border-[oklch(0.32_0.01_55)] bg-[oklch(0.185_0.008_55)] overflow-hidden flex flex-col shadow-[0_1px_2px_oklch(0.3_0.02_50/.1),0_24px_54px_oklch(0.3_0.02_50/.16)] sm:col-span-2 lg:col-span-2 lg:row-span-2 lg:col-start-1 lg:row-start-1 max-h-[380px] lg:max-h-[466px]"
               >
                 <div className="flex items-center gap-[7px] px-[15px] py-[13px] border-b border-[oklch(0.28_0.01_55)]">
                   <span className="w-[11px] h-[11px] rounded-full bg-[oklch(0.62_0.16_25)]" />
@@ -724,7 +771,7 @@ function SkillsSection() {
 
 function ContactSection() {
   return (
-    <section id="contact" className="max-w-[1120px] mx-auto px-8 pt-[92px] pb-10">
+    <section id="contact" className="max-w-[1120px] mx-auto px-8 pt-14 md:pt-[92px] pb-10">
       <SectionLabel index="06" title="CONTACT" />
       <motion.h2
         {...reveal}
@@ -772,18 +819,23 @@ function Footer() {
 }
 
 export default function HomePage() {
+  const [introActive, setIntroActive] = useState(true);
+
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <Navbar />
-      <HeroSection />
-      <TechMarquee />
-      <NowSection />
-      <WorkSection />
-      <ExperienceSection />
-      <WritingSection />
-      <SkillsSection />
-      <ContactSection />
-      <Footer />
+      {introActive && <IntroAnimation onDone={() => setIntroActive(false)} />}
+      <div aria-hidden={introActive} className={introActive ? "pointer-events-none" : undefined}>
+        <Navbar />
+        <HeroSection />
+        <TechMarquee />
+        <NowSection />
+        <WorkSection />
+        <ExperienceSection />
+        <WritingSection />
+        <SkillsSection />
+        <ContactSection />
+        <Footer />
+      </div>
     </main>
   );
 }
